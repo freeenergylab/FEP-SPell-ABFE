@@ -27,7 +27,7 @@ SubmitBFE.sh -i config.yaml # SubmitBFE.sh should be modified according to your 
 ```
 
 # Advanced usage:
-Users can fine-tune the behavior of this workflow by editing the configuration yaml file. Please note the comments in the yaml file.
+Users can fine-tune the behavior of this workflow by editing the `config.yaml` file. Please note the comments in the `config.yaml` file.
 
 # Dependencies:
 This workflow mainly depends on the following packages:
