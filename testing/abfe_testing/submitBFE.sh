@@ -20,13 +20,13 @@ module purge
 module load slurm/slurm/20.02.7
 module load cuda12.0/toolkit/12.0.1
 module load openmpi/5.0.3
-module load amber24_ambertools24
+module load amber/amber24_ambertools24
 module load anaconda3/FEP-SPell-ABFE
 module load apbs/3.4.1
 
 export CONFIG_FILE='config.yaml'
-export RBFE_PKGPATH=$HOME/software/freeenergylab/FEP-SPell-ABFE/dev
-export PYTHONPATH=$RBFE_PKGPATH:$PYTHONPATH
+export ABFE_PKGPATH=$HOME/software/freeenergylab/FEP-SPell-ABFE/dev
+export PYTHONPATH=$ABFE_PKGPATH:$PYTHONPATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 #==============================================================================
 # Setup Python Requirement
@@ -49,7 +49,7 @@ else
     echo "Python $python_version detected (compatible)"
 fi
 #==============================================================================
-# Submit RBFE Jobs
+# Submit ABFE Jobs
 #==============================================================================
 if [ -d "_logs" ]; then
     echo "Delete the previous _logs directory..."
@@ -57,7 +57,7 @@ if [ -d "_logs" ]; then
 fi
 if [ -f $CONFIG_FILE ] ; then
     export PYTHON_EXE=$python_executable
-    $PYTHON_EXE $RBFE_PKGPATH/abfe/abfe_main.py -i $CONFIG_FILE
+    $PYTHON_EXE $ABFE_PKGPATH/abfe/abfe_main.py -i $CONFIG_FILE
     echo "Used python is <$PYTHON_EXE>."
     echo "Job submission is finished sucessfully now."
 else
