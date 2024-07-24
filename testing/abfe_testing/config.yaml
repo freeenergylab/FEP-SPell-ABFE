@@ -23,11 +23,10 @@
     },
     "topology": {
         "protein_name": "181L",                           # user-defined protein name
-        "cofactor_names": [],                             # list of strings, e.g. ["CFA", "CFB"]
-        "cofactor_chg": "am1bcc",                         # ["am1bcc"]
-        "cofactor_ff": "gaff2",                           # ["gaff2"]
-        "ligand_ff": "gaff2",                             # ["gaff2"]
         "protein_ff": "ff14SB",                           # ["ff14SB"]
+        "ligand_ff": "gaff2",                             # ["gaff2"]
+        "cofactor_names": [],                             # list of strings, e.g. ["CFA", "CFB"]
+        "cofactor_ff": "gaff2",                           # ["gaff2"]
         "lipid_ff": "",                                   # ["lipid21"] for lipid membrane
         "water_ff": "tip3p",                              # ["tip3p", "spce", "tip4pew"]
         "box_type": "oct",                                # ["rect" or "oct"]
