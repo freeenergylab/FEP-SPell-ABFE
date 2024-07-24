@@ -14,11 +14,12 @@ FEP-SPell-ABFE: An Open Source Alchemical Absolute Binding Free Energy Calculati
 
 # Basic usage:
 Before launching ABFE jobs, your working directory should include the following files:
-- A 'proteins' directory with structure `proteins/[protein_name]/protein.pdb`, when "hfe_only=False".
-- A 'ligands' directory with structure `ligands/[ligand_name]/ligand.sdf(or ligand.mol2)`.
-- A 'cofactors' directory with structure `cofactors/[cofactor_name]/cofactor.sdf (or cofactor.mol2)`, if cofactors are present.
-- A configuration yaml format file. Check out the example file: `testing/abfe_testing/config.yaml`.
-- A sbmitBFE.sh bash shell file. Check out the example file: `testing/abfe_testing/submitBFE.sh`.
+- A `proteins` directory with structure `proteins/[protein_name]/protein.pdb`, when "hfe_only=False".
+- A `ligands` directory with structure `ligands/[ligand_name]/ligand.sdf(or ligand.mol2)`.
+- A `cofactors` directory with structure `cofactors/[cofactor_name]/cofactor.sdf (or cofactor.mol2)`, if cofactors are present.
+- A `ligands.in` text file determining which compounds will be submitted to calculate ABFE.
+- A `config.yaml` yaml file. Check out the example file: `testing/abfe_testing/config.yaml`.
+- A `sbmitBFE.sh` bash file. Check out the example file: `testing/abfe_testing/submitBFE.sh`.
 
 After the above files are prepared well, please submit your jobs using the following command:
 ```
