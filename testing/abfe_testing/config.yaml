@@ -3,11 +3,12 @@
         "ligands_in": "ligands.in",                       # input file containing compounds to be submitted
         "workflow_type": "abfe",                          # ["abfe", "ahfe"]
         "stages": [
-            "topology", "equilibration",                  # "topology", "equilibration",
-            "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
-            "alchemy_analysis"                            # "alchemy_analysis"
+            "topology"
+            # "topology", "equilibration",                  # "topology", "equilibration",
+            # "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
+            # "alchemy_analysis"                            # "alchemy_analysis"
         ],
-        "simulation": {                                   # md simulation control parameters
+        "mdcntrl": {                                      # md simulation control parameters
             "temperature": 298.15,                        # simulation temperature, in Kelvin
             "cutoff": 9.,                                 # cutoff value for long-range interactions, in Angstrom
             "ntwx": 1.,                                   # output saved samples frequency, in ps
@@ -25,7 +26,7 @@
         "protein_name": "181L",                           # user-defined protein name
         "protein_ff": "ff14SB",                           # ["ff14SB"]
         "ligand_ff": "gaff2",                             # ["gaff2"]
-        "cofactor_names": [],                             # list of strings, e.g. ["CFA", "CFB"]
+        "cofactor_names": ["BNZ", "PHN"],                 # list of strings, e.g. ["CFA", "CFB"]
         "cofactor_ff": "gaff2",                           # ["gaff2"]
         "lipid_ff": "",                                   # ["lipid21"] for lipid membrane
         "water_ff": "tip3p",                              # ["tip3p", "spce", "tip4pew"]

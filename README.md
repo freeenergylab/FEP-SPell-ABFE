@@ -16,7 +16,7 @@ FEP-SPell-ABFE: An Open Source Alchemical Absolute Binding Free Energy Calculati
 Before launching ABFE jobs, your working directory should include the following files:
 - A `proteins` directory with structure `proteins/[protein_name]/protein.pdb`, when "hfe_only=False".
 - A `ligands` directory with structure `ligands/[ligand_name]/ligand.sdf(or ligand.mol2)`.
-- A `cofactors` directory with structure `cofactors/[cofactor_name]/cofactor.sdf (or cofactor.mol2)`, if cofactors are present.
+- A `cofactors` directory with structure `cofactors/[cofactor_name]/cofactor.sdf (or cofactor.mol2)`, if cofactors are present. `[cofactor_name]` should be three-capital-letter style, e.g. CFA, CFB et al.
 - A `ligands.in` text file determining which compounds will be submitted to calculate ABFE.
 - A `config.yaml` yaml file. Check out the example file: `testing/abfe_testing/config.yaml`.
 - A `sbmitBFE.sh` bash file. Check out the example file: `testing/abfe_testing/submitBFE.sh`.
@@ -31,7 +31,7 @@ submitBFE.sh -i config.yaml # submitBFE.sh should be modified according to your 
 Users can fine-tune the behavior of this workflow by editing the `config.yaml` file. Please note the comments in the `config.yaml` file.
 
 # Dependencies:
-This workflow mainly depends on the following packages:
+This workflow mainly depends on the packages including Slurm, CUDA, OpenMPI, Amber, Anaconda3 and APBS. With the environment-modules's help, you can use `module load` command to load the dependent softwares, like:
 ```
 module load slurm/slurm/20.02.7
 module load cuda12.0/toolkit/12.0.1
@@ -40,11 +40,49 @@ module load amber24_ambertools24
 module load anaconda3/FEP-SPell-ABFE
 module load apbs/3.4.1
 ```
-Anaconda3 conda environment depolyment refers to:
+## Anaconda3 environment depolyment refers to:
 ```
-conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
+ 1. cd Your_Anaconda3_Installation_PATH # e.g. cd $HOME/software/anaconda3/2024.06
+ 2. wget https://repo.anaconda.com/archive/Anaconda3-2024.06-1-Linux-x86_64.sh
+ 3. chmod +x Anaconda3-2024.06-1-Linux-x86_64.sh
+ 4. ./Anaconda3-2024.06-1-Linux-x86_64.sh -u
+ 5. source $HOME/software/anaconda3/2024.06/bin/activate base
+ 6. conda create --name FEP-SPell-ABFE --clone base
+ 7. conda activate FEP-SPell-ABFE
+ 8. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
+ 9. pip install rdkit
+10. pip install parmed
+
+###############################################################################
+
+module load anaconda3/FEP-SPell-ABFE
+
+# FEP-SPell-ABFE modulefile, like:
+"""
+conflict anaconda3
+
+setenv ANACONDA3HOME "$env(HOME)/software/anaconda3/2024.06"
+prepend-path PATH "$env(ANACONDA3HOME)/envs/FEP-SPell-ABFE/bin"
+prepend-path PYTHONPATH "$env(ANACONDA3HOME)/envs/FEP-SPell-ABFE/lib/python3.12/site-packages"
+"""
 ```
-APBS software installation refers to:
+## Amber and AmberTools software installation refers to:
+```
+chmod +x amber.sh
+###############################################################################
+
+module load amber24_ambertools24
+
+# amber24_ambertools24 modulefile, like:
+"""
+conflict amber24
+
+setenv AMBERHOME "$env(HOME)/software/amber/amber24_ambertools24/amber24"
+
+system "$env(AMBERHOME)/amber.sh"
+"""
+```
+## APBS software installation refers to:
 ```
  1. wget https://github.com/Electrostatics/apbs/releases/download/v3.4.1/APBS-3.4.1.Linux.zip
  2. unzip APBS-3.4.1.Linux.zip
