@@ -33,3 +33,5 @@ PHOSAA_DEFS = {
 LIPID_DEFS = {
     'lipid21': {'source': 'leaprc.lipid21'},
     }
+
+WORKFLOW_TYPES = ["abfe", "ahfe"]
