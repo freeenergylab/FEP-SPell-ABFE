@@ -197,6 +197,7 @@ class abfeWorkflow(object):
                 temperature=self.args.main.mdcntrl['temperature'],
                 cutoff=self.args.main.mdcntrl['cutoff'],
                 timestep=self.args.equilibration.timestep,
+                cpus_per_task=self.args.main.slurm['cpus-per-task'],
                 hfe_only=self.hfe_only,
                 )
             slurm_params = {
@@ -206,7 +207,7 @@ class abfeWorkflow(object):
                 'partition': self.args.main.slurm['partition'],
                 'nodes': 1,
                 'ntasks-per-node': 1,
-                'cpus-per-task': 2,
+                'cpus-per-task': self.args.main.slurm['cpus-per-task'],
                 'time': '72:00:00',
                 'gpujob': True,
                 'gpus': 1,
@@ -305,7 +306,7 @@ class abfeWorkflow(object):
                 'partition': self.args.main.slurm['partition'],
                 'nodes': 1,
                 'ntasks-per-node': 1,
-                'cpus-per-task': 2,
+                'cpus-per-task': self.args.main.slurm['cpus-per-task'],
                 'time': '72:00:00',
                 'gpujob': True,
                 'gpus': 1,

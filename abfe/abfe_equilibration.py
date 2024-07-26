@@ -66,6 +66,10 @@ def _parse_args():
         help='force constant of positional restraint, in kcal/mol/A^2'
         )
     parser.add_argument(
+        '--cpus_per_task', type=int, default=2,
+        help='The number of CPU process cores'
+        )
+    parser.add_argument(
         '--temperature', type=float, default=298.15,
         help='System temperature (in K)'
         )
@@ -136,11 +140,14 @@ if __name__ == '__main__':
     with ctools.DirManager(workdir):
         for step, protocol in lig_equil_steps.items():
             md_tools.write_mdin_file(f'{step}.in', protocol)
+        os.system(f"ln -s -f {lig.parm7_file} .")
+        os.system(f"ln -s -f {lig.rst7_file} .")
         last_md_info = md_tools.write_md_submit_sh(
             fmdsh=sh_filename,
             mdsteps=list(lig_equil_steps.keys()),
             fparm7=lig.parm7_file,
             frst7=lig.rst7_file,
+            nprocess=args.cpus_per_task,
             dry_run=args.dry_run
             )
         if not last_md_info:
@@ -203,11 +210,14 @@ if __name__ == '__main__':
         with ctools.DirManager(workdir):
             for step, protocol in comp_equil_steps.items():
                 md_tools.write_mdin_file(f'{step}.in', protocol)
+            os.system(f"ln -s -f {comp.parm7_file} .")
+            os.system(f"ln -s -f {comp.rst7_file} .")
             last_md_info = md_tools.write_md_submit_sh(
                 fmdsh=sh_filename,
                 mdsteps=list(comp_equil_steps.keys()),
                 fparm7=comp.parm7_file,
                 frst7=comp.rst7_file,
+                nprocess=args.cpus_per_task,
                 dry_run=args.dry_run
                 )
             if not last_md_info:

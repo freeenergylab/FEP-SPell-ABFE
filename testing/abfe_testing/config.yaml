@@ -19,6 +19,12 @@
             "partition": "3080",                          # slurm partition name, e.g. "3080"
             "exclude": "headnode",                        # excluded nodes, e.g. "headnode"
             "gpus-per-node": 4,                           # gpu number on each compute node
+            "cpus-per-task": 4,                           # cpu cores for each task for md simulation
+            "time": [
+                "72:00:00", "72:00:00",
+                "72:00:00", "72:00:00",
+                "72:00:00"
+            ],                                            # timelimit for each stage of the above stages
         },   
     },
     "topology": {

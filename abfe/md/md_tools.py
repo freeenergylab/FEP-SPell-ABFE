@@ -27,7 +27,7 @@ def write_mdin_file(fmdin, protocol):
     with open(fmdin, 'w') as _fmdin:
         _fmdin.write(protocol)
 
-def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
+def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, nprocess=2, dry_run=False):
     """Write md submit bash file.
 
     Args:
@@ -35,6 +35,7 @@ def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
         mdsteps (list): A list contains several md steps.
         fparm7 (str): initial parm7 filename
         frst7 (str): initial rst7 filename
+        nprocess (int): the number of CPU process cores
         dry_run (bool): False: submit; True: only slurm bash script
     """
     header = ['#!/usr/bin/env bash']
@@ -44,7 +45,8 @@ def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
             _fmdsh.write('\n')
             if j==0 and step.startswith('min'):
                 min_cmd = [
-                    os.path.join(const.AMBERBIN, 'pmemd'),
+                    'mpirun', '--oversubscribe', '-np', str(nprocess),
+                    os.path.join(const.AMBERBIN, 'pmemd.MPI'),
                     '-O', f'-i {step}.in', f'-p {fparm7}',
                     f'-c {frst7}', f'-ref {frst7}',
                     f'-o {step}.out', f'-r {step}.rst7',
@@ -53,7 +55,8 @@ def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
                 _fmdsh.write(' '.join(min_cmd) + '\n')
             elif j==1 and step.startswith('min'):
                 min_cmd = [
-                    os.path.join(const.AMBERBIN, 'pmemd'),
+                    'mpirun', '--oversubscribe', '-np', str(nprocess),
+                    os.path.join(const.AMBERBIN, 'pmemd.MPI'),
                     '-O', f'-i {step}.in', f'-p {fparm7}',
                     f'-c {mdsteps[j-1]}.rst7', f'-ref {mdsteps[j-1]}.rst7',
                     f'-o {step}.out', f'-r {step}.rst7',
@@ -62,7 +65,11 @@ def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
                 _fmdsh.write(' '.join(min_cmd) + '\n')
             else:
                 if step.startswith('press-1'):
-                    md_engine = os.path.join(const.AMBERBIN, 'pmemd')
+                    _md_engine = [
+                        'mpirun', '--oversubscribe', '-np', str(nprocess),
+                        os.path.join(const.AMBERBIN, 'pmemd.MPI')
+                        ]
+                    md_engine = ' '.join(_md_engine)
                 else:
                     md_engine = os.path.join(const.AMBERBIN, 'pmemd.cuda')
                 md_cmd = [
@@ -90,14 +97,15 @@ def write_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
     except Exception:
         return False
 
-def write_alchemy_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
+def write_alchemy_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, nprocess=2, dry_run=False):
     """Write alchemy md submit bash file.
 
     Args:
-        fmdsh (str): A md bash file name.
-        mdsteps (list): A list contains several md steps.
-        fparm7 (str): initial parm7 filename
-        frst7 (str): initial rst7 filename
+        fmdsh (str): a md bash file name.
+        mdsteps (list): a list contains several md steps.
+        fparm7 (str): the initial parm7 filename
+        frst7 (str): the initial rst7 filename
+        nprocess (int): the number of CPU process cores
         dry_run (bool): False: submit; True: only slurm bash script
     """
     header = ['#!/usr/bin/env bash']
@@ -107,7 +115,8 @@ def write_alchemy_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, dry_run=False):
             _fmdsh.write('\n')
             if j==0 and step.startswith('min'):
                 md_cmd = [
-                    os.path.join(const.AMBERBIN, 'pmemd'),
+                    'mpirun', '--oversubscribe', '-np', str(nprocess),
+                    os.path.join(const.AMBERBIN, 'pmemd.MPI'),
                     '-O', f'-i {step}.in', f'-p {fparm7}',
                     f'-c {frst7}', f'-ref {frst7}',
                     f'-o {step}.out', f'-r {step}.rst7', f'-x {step}.nc',
