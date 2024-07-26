@@ -158,7 +158,7 @@ class abfeWorkflow(object):
                             'nodes': 1,
                             'ntasks-per-node': 1,
                             'cpus-per-task': 2,
-                            'time': '72:00:00',
+                            'time': self.args.main.slurm['time'][0],
                             'gpujob': False,
                             }
             exclude =  self.args.main.slurm['exclude']
@@ -208,7 +208,7 @@ class abfeWorkflow(object):
                 'nodes': 1,
                 'ntasks-per-node': 1,
                 'cpus-per-task': self.args.main.slurm['cpus-per-task'],
-                'time': '72:00:00',
+                'time': self.args.main.slurm['time'][1],
                 'gpujob': True,
                 'gpus': 1,
                 'dependency': f'afterok:{self.topology_jobids[lig_name]}'
@@ -253,7 +253,7 @@ class abfeWorkflow(object):
                             'nodes': 1,
                             'ntasks-per-node': 1,
                             'cpus-per-task': 2,
-                            'time': '72:00:00',
+                            'time': self.args.main.slurm['time'][2],
                             'gpujob': False,
                             'dependency': f'afterok:{self.equilibration_jobids[lig_name]}'
                             }
@@ -307,7 +307,7 @@ class abfeWorkflow(object):
                 'nodes': 1,
                 'ntasks-per-node': 1,
                 'cpus-per-task': self.args.main.slurm['cpus-per-task'],
-                'time': '72:00:00',
+                'time': self.args.main.slurm['time'][3],
                 'gpujob': True,
                 'gpus': 1,
                 'dependency': f'afterok:{self.alchemy_morph_jobids[lig_name]}'
@@ -353,7 +353,7 @@ class abfeWorkflow(object):
                             'nodes': 1,
                             'ntasks-per-node': 1,
                             'cpus-per-task': 2,
-                            'time': '72:00:00',
+                            'time': self.args.main.slurm['time'][4],
                             'gpujob': False,
                             'dependency': f'afterok:{self.alchemy_md_jobids[lig_name]}'
                             }
