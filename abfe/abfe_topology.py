@@ -177,7 +177,7 @@ if __name__ == "__main__":
             raise RuntimeError(error_msg)
         # Load cofactors with gaff2.
         for cof_name, cof in comp.cofactors.items():
-            cof_workdir = os.path.join(args.abfe_workdir, '_topology', cof_name)
+            cof_workdir = os.path.join(args.abfe_workdir, '_topology', comp.compname, cof_name)
             cof.prep_cofactor_ff(ff=args.cofactor_ff, workdir=cof_workdir)
 
         # Prepare the solvated complex.

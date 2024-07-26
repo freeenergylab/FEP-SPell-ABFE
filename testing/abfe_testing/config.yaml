@@ -1,10 +1,9 @@
 {
     "main": {
         "ligands_in": "ligands.in",                       # input file containing compounds to be submitted
-        "workflow_type": "abfe",                          # ["abfe", "ahfe"]
+        "workflow_type": "abfe",                          # {"abfe", "ahfe"}
         "stages": [
-            "topology"
-            # "topology", "equilibration",                  # "topology", "equilibration",
+            "topology", "equilibration",                  # "topology", "equilibration",
             # "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
             # "alchemy_analysis"                            # "alchemy_analysis"
         ],
@@ -24,13 +23,13 @@
     },
     "topology": {
         "protein_name": "181L",                           # user-defined protein name
-        "protein_ff": "ff14SB",                           # ["ff14SB"]
-        "ligand_ff": "gaff2",                             # ["gaff2"]
-        "cofactor_names": ["BNZ", "PHN"],                 # list of strings, e.g. ["CFA", "CFB"]
-        "cofactor_ff": "gaff2",                           # ["gaff2"]
-        "lipid_ff": "",                                   # ["lipid21"] for lipid membrane
-        "water_ff": "tip3p",                              # ["tip3p", "spce", "tip4pew"]
-        "box_type": "oct",                                # ["rect" or "oct"]
+        "protein_ff": "ff14SB",                           # {"ff14SB"}
+        "ligand_ff": "gaff2",                             # {"gaff2"}
+        "cofactor_names": [],                             # list of strings, e.g. ["CFA", "CFB"]
+        "cofactor_ff": "gaff2",                           # {"gaff2"}
+        "lipid_ff": "",                                   # {"lipid21"} for lipid membrane
+        "water_ff": "tip3p",                              # {"tip3p", "spce", "tip4pew"}
+        "box_type": "oct",                                # {"rect" or "oct"}
         "lig_box_buffer": 18.0,                           # box buffer for ligand, in Angstrom
         "com_box_buffer": 8.0,                            # box buffer for complex, in Angstrom
         "neutralize": True,                               # keep system neutral
