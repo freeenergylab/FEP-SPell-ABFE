@@ -33,11 +33,12 @@ Users can fine-tune the behavior of this workflow by editing the `config.yaml` f
 # Dependencies:
 This workflow mainly depends on the packages including Slurm, CUDA, OpenMPI, Amber, Anaconda3 and APBS. With the environment-modules's help, you can use `module load` command to load the dependent softwares, like:
 ```
+module purge
 module load slurm/slurm/20.02.7
 module load cuda12.0/toolkit/12.0.1
 module load openmpi/5.0.3
-module load amber24_ambertools24
 module load anaconda3/FEP-SPell-ABFE
+module load amber/amber24_ambertools24
 module load apbs/3.4.1
 ```
 ## Anaconda3 environment depolyment refers to:
@@ -57,7 +58,7 @@ module load apbs/3.4.1
 
 module load anaconda3/FEP-SPell-ABFE
 
-# FEP-SPell-ABFE modulefile, like:
+# anaconda3/FEP-SPell-ABFE modulefile, like:
 """
 conflict anaconda3
 
@@ -68,28 +69,45 @@ prepend-path PYTHONPATH "$env(ANACONDA3HOME)/envs/FEP-SPell-ABFE/lib/python3.12/
 ```
 ## Amber and AmberTools software installation refers to:
 ```
-chmod +x amber.sh
+0. module purge
+1. module load gcc9/9.3.0
+2. module load cuda12.0/toolkit/12.0.1
+3. tar xvf Amber24.tar.bz2
+4. tar xvf AmberTools24.tar.bz2
+5. cd amber24_src
+6. cd build
+7. vim run_cmake # change to -DMPI=TRUE -DCUDA=TRUE in line 42
+8. ./run_cmake
+9. make -j32 install # use 32 CPU cores to make
+
 ###############################################################################
 
-module load amber24_ambertools24
+module load amber/amber24_ambertools24
 
-# amber24_ambertools24 modulefile, like:
+# amber/amber24_ambertools24 modulefile, like:
 """
 conflict amber24
 
 setenv AMBERHOME "$env(HOME)/software/amber/amber24_ambertools24/amber24"
 
-system "$env(AMBERHOME)/amber.sh"
+if { [ module-info mode load ] } { puts stdout ". $env(AMBERHOME)/amber.sh" }
 """
 ```
 ## APBS software installation refers to:
 ```
- 1. wget https://github.com/Electrostatics/apbs/releases/download/v3.4.1/APBS-3.4.1.Linux.zip
- 2. unzip APBS-3.4.1.Linux.zip
- 3. module load apbs/3.4.1
-    (configure modulefile like:
-     setenv APBSHOME "[Path to install APBS]/APBS-3.4.1.Linux"
-     prepend-path PATH "$env(APBSHOME)/bin"
-     prepend-path LD_LIBRARY_PATH "$env(APBSHOME)/lib"
-     )
+1. wget https://github.com/Electrostatics/apbs/releases/download/v3.4.1/APBS-3.4.1.Linux.zip
+2. unzip APBS-3.4.1.Linux.zip
+
+###############################################################################
+
+module load apbs/3.4.1
+
+# apbs/3.4.1 modulefile, like:
+"""
+conflict apbs
+
+setenv APBSHOME "$env(HOME)/software/Electrostatics/APBS-3.4.1.Linux"
+prepend-path PATH "$env(APBSHOME)/bin"
+prepend-path LD_LIBRARY_PATH "$env(APBSHOME)/lib"
+"""
 ```

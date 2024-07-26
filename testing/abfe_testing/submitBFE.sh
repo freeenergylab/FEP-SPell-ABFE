@@ -20,8 +20,8 @@ module purge
 module load slurm/slurm/20.02.7
 module load cuda12.0/toolkit/12.0.1
 module load openmpi/5.0.3
-module load amber/amber24_ambertools24
 module load anaconda3/FEP-SPell-ABFE
+module load amber/amber24_ambertools24
 module load apbs/3.4.1
 
 export CONFIG_FILE='config.yaml'
