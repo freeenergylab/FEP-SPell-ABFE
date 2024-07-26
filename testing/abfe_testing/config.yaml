@@ -42,6 +42,8 @@
         "timestep": 0.002,                                # in ps; 0.004 ps if HMR
         "solvated_length": 10.,                           # simulation time for ligand in water, in ns
         "complex_length": 10.,                            # simulation time for ligand in binding pocket, in ns
+        "restraintmask": "!:WAT,Cl-,K+,Na+ & !@H=",       # specify solute heavy atoms for positional restraint during min-heat-press simulations, in Amber-Mask style
+        "restraint_wt": 5.,                               # set force constant of positional restraint, in kcal/mol/A^2
     },
     "alchemy_morph": {
         "hmr": False,                                     # False: Turn off HMR; True: turn on HMR; for alchemy_md stage
@@ -54,6 +56,8 @@
         "remd_numexchg": 1000,                            # 1000 attempts for remd
         "solvated_length": 5.0,                           # FEP production simulation time for solvated leg, in ns
         "complex_length": 5.0,                            # FEP production simuletion time for complex legs, in ns
+        "restraintmask": "!:WAT,Cl-,K+,Na+ & !@H=",       # specify solute heavy atoms for positional restraint during min-heat-press simulations, in Amber-Mask style
+        "restraint_wt": 5.,                               # set force constant of positional restraint, in kcal/mol/A^2
         "lig_restraint_atoms": {                          # Boresch-style three atoms of protein receptor: [L1, L2, L3], in Amber-Mask style
             "bnz": [":1@C3", ":1@C2", ":1@C1"],
             "phn": [":1@C3", ":1@C2", ":1@C1"],

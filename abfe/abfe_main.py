@@ -192,6 +192,8 @@ class abfeWorkflow(object):
                 complex_name=comp_name,
                 abfe_workdir=self.abfe_workdir,
                 dry_run=self.args.equilibration.dry_run,
+                restraintmask=self.args.equilibration.restraintmask,
+                restraint_wt=self.args.equilibration.restraint_wt,
                 temperature=self.args.main.mdcntrl['temperature'],
                 cutoff=self.args.main.mdcntrl['cutoff'],
                 timestep=self.args.equilibration.timestep,
