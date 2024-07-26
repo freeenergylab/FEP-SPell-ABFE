@@ -27,6 +27,7 @@ module load apbs/3.4.1
 export CONFIG_FILE='config.yaml'
 export ABFE_PKGPATH=$HOME/software/freeenergylab/FEP-SPell-ABFE/dev
 export PYTHONPATH=$ABFE_PKGPATH:$PYTHONPATH
+export PYTHONPATH=$ABFE_PKGPATH/abfe/thirdparty:$PYTHONPATH
 export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH
 #==============================================================================
 # Setup Python Requirement

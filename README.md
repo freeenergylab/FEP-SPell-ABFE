@@ -13,7 +13,13 @@ FEP-SPell-ABFE: An Open Source Alchemical Absolute Binding Free Energy Calculati
 - Support for including 'cofactors' in the system.
 
 # Basic usage:
-Before launching ABFE jobs, your working directory should include the following files:
+```
+cd Your_Software_Installation_Directory
+git clone https://github.com/freeenergylab/FEP-SPell-ABFE.git
+```
+Here, an application example refers to  `FEP-SPell-ABFE/testing`, which can be used to make sure that you can obtain the consistent results with ours (`FEP-SPell-ABFE/testing/abfe_testing/results.csv`) using this example system under your software environment.
+
+Before launching new ABFE jobs, your working directory should include the following files:
 - A `proteins` directory with structure `proteins/[protein_name]/protein.pdb`, when "hfe_only=False".
 - A `ligands` directory with structure `ligands/[ligand_name]/ligand.sdf(or ligand.mol2)`.
 - A `cofactors` directory with structure `cofactors/[cofactor_name]/cofactor.sdf (or cofactor.mol2)`, if cofactors are present. `[cofactor_name]` should be three-capital-letter style, e.g. CFA, CFB et al.
