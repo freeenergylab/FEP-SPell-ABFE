@@ -17,14 +17,14 @@ import pandas as pd
 import seaborn as sns
 from collections import defaultdict
 
-from abfe.thirdparty.alchemlyb import concat
-from abfe.thirdparty.alchemlyb.estimators import MBAR, BAR, TI
-from abfe.thirdparty.alchemlyb.parsing import amber
-from abfe.thirdparty.alchemlyb.parsing.amber import extract_u_nk, extract_dHdl
-from abfe.thirdparty.alchemlyb.visualisation import plot_convergence
-from abfe.thirdparty.alchemlyb.visualisation.dF_state import plot_dF_state
-from abfe.thirdparty.alchemlyb.visualisation.ti_dhdl import plot_ti_dhdl
-from abfe.thirdparty.alchemlyb.visualisation.mbar_matrix import plot_mbar_overlap_matrix
+from alchemlyb import concat
+from alchemlyb.estimators import MBAR, BAR, TI
+from alchemlyb.parsing import amber
+from alchemlyb.parsing.amber import extract_u_nk, extract_dHdl
+from alchemlyb.visualisation import plot_convergence
+from alchemlyb.visualisation.dF_state import plot_dF_state
+from alchemlyb.visualisation.ti_dhdl import plot_ti_dhdl
+from alchemlyb.visualisation.mbar_matrix import plot_mbar_overlap_matrix
 
 def beta(T):
     """Convert to beta in units of kT (beta in 1./(kcal/mol)).

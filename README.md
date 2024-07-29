@@ -59,6 +59,7 @@ module load apbs/3.4.1
  9. pip install rdkit
 10. pip install parmed
 11. pip install griddata
+12. pip install alchemlyb
  or
  6-11. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
 
