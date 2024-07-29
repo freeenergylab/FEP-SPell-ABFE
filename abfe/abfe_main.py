@@ -298,6 +298,7 @@ class abfeWorkflow(object):
                 partition=self.args.main.slurm['partition'],
                 exclude=self.args.main.slurm['exclude'],
                 gpus_per_node=self.args.main.slurm['gpus-per-node'],
+                cpus_per_task=self.args.main.slurm['cpus-per-task'],
                 )
             slurm_params = {
                 'job-name': lig_name+'.alchemy_md',

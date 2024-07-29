@@ -49,7 +49,6 @@ SOLVATED_HEAT="""Heat MD
   ntx = 1,
   nstlim = 10000,
   dt = DT,
-  iwrap = 0,
 
   ntb = 1,
   cut = CUT,
@@ -95,7 +94,6 @@ SOLVATED_PRESS="""Press MD
   ntx = 5,
   nstlim = 10000,
   dt = DT,
-  iwrap = 0,
 
   ntb = 2,
   cut = CUT,
@@ -129,7 +127,6 @@ SOLVATED_RELAX="""Relax MD
   ntx = 5,
   nstlim = NSTLIM,
   dt = DT,
-  iwrap = 1,
 
   ntb = 2,
   cut = CUT,
@@ -194,7 +191,6 @@ COMPLEX_HEAT = """Heat MD
   ntx = 1,
   nstlim = 10000,
   dt = DT,
-  iwrap = 0,
 
   ntb = 1,
   cut = CUT,
@@ -240,7 +236,6 @@ COMPLEX_PRESS = """Press MD
   ntx = 5,
   nstlim = 10000,
   dt = DT,
-  iwrap = 0,
 
   ntb = 2,
   cut = CUT,
@@ -274,7 +269,6 @@ COMPLEX_RELAX = """Relax MD
   ntx = 5,
   nstlim = NSTLIM,
   dt = DT,
-  iwrap = 1,
 
   ntb = 2,
   cut = CUT,

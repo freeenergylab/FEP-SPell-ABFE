@@ -123,6 +123,16 @@ def write_alchemy_md_submit_sh(fmdsh, mdsteps, fparm7, frst7, nprocess=2, dry_ru
                     f'-inf {step}.info'
                     ]
                 _fmdsh.write(' '.join(md_cmd) + '\n')
+            elif j==1 and step.startswith('min'):
+                md_cmd = [
+                    'mpirun', '--oversubscribe', '-np', str(nprocess),
+                    os.path.join(const.AMBERBIN, 'pmemd.MPI'),
+                    '-O', f'-i {step}.in', f'-p {fparm7}',
+                    f'-c {mdsteps[j-1]}.rst7', f'-ref {mdsteps[j-1]}.rst7',
+                    f'-o {step}.out', f'-r {step}.rst7', f'-x {step}.nc',
+                    f'-inf {step}.info'
+                    ]
+                _fmdsh.write(' '.join(md_cmd) + '\n')
             else:
                 md_cmd = [
                     os.path.join(const.AMBERBIN, 'pmemd.cuda'),

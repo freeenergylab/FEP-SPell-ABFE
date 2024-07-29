@@ -4,7 +4,7 @@
         "workflow_type": "abfe",                          # {"abfe", "ahfe"}
         "stages": [
             "topology", "equilibration",                  # "topology", "equilibration",
-            "alchemy_morph", #"alchemy_md",                # "alchemy_morph", "alchemy_md",
+            "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
             # "alchemy_analysis"                            # "alchemy_analysis"
         ],
         "mdcntrl": {                                      # md simulation control parameters
@@ -60,8 +60,8 @@
         "timestep": 0.002,                                # in ps; 0.004 ps if HMR
         "remd": False,                                    # True: turn on; False: turn off, replica-exchange method for FEP production simulation
         "remd_numexchg": 1000,                            # 1000 attempts for remd
-        "solvated_length": 5.0,                           # FEP production simulation time for solvated leg, in ns
-        "complex_length": 5.0,                            # FEP production simuletion time for complex legs, in ns
+        "solvated_length": 0.5,                           # FEP production simulation time for solvated leg, in ns
+        "complex_length": 0.5,                            # FEP production simuletion time for complex legs, in ns
         "restraintmask": "!:WAT,Cl-,K+,Na+ & !@H=",       # specify solute heavy atoms for positional restraint during min-heat-press simulations, in Amber-Mask style
         "restraint_wt": 5.,                               # set force constant of positional restraint, in kcal/mol/A^2
         "lig_restraint_atoms": {                          # Boresch-style three atoms of protein receptor: [L1, L2, L3], in Amber-Mask style
