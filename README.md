@@ -60,8 +60,8 @@ module load apbs/3.4.1
 10. pip install parmed
 11. pip install griddata
 12. pip install alchemlyb
- or
- 6-11. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
+ or, you can also create `FEP-SPell-ABFE` environment using `environment_abfe_yml` file, like:
+6-12. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
 
 ###############################################################################
 
