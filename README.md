@@ -58,7 +58,7 @@ module load apbs/3.4.1
  7. conda activate FEP-SPell-ABFE
  9. pip install rdkit
 10. pip install parmed
-11. pip install gridData
+11. pip install griddata
  or
  6-11. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
 

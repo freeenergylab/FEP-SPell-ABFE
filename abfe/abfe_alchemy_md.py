@@ -196,9 +196,9 @@ class BoreschRestraint(object):
 
     def _gen_rst_str(self, lig_idx):
         """Constructe multiple restraints"""
-        dis_fmt = '&rst iat=%d,%d r1=0.0, r2=%.2f, r3=%.2f, r4=99.0, rk2=%.2f, rk3=%.2f'
-        ang_fmt = '&rst iat=%d,%d,%d r1=0.0, r2=%.2f, r3=%.2f, r4=180.0, rk2=%.2f, rk3=%.2f'
-        dih_fmt = '&rst iat=%d,%d,%d,%d r1=%.2f, r2=%.2f, r3=%.2f, r4=%.2f, rk2=%.2f, rk3=%.2f'
+        dis_fmt = '&rst iat=%d,%d r1=0.0, r2=%.2f, r3=%.2f, r4=99.0, rk2=%.2f, rk3=%.2f/'
+        ang_fmt = '&rst iat=%d,%d,%d r1=0.0, r2=%.2f, r3=%.2f, r4=180.0, rk2=%.2f, rk3=%.2f/'
+        dih_fmt = '&rst iat=%d,%d,%d,%d r1=%.2f, r2=%.2f, r3=%.2f, r4=%.2f, rk2=%.2f, rk3=%.2f/'
         # atom indices
         L1, L2, L3 = self._lig_atoms(lig_idx)
         P1, P2, P3 = self._rec_atoms()

@@ -5,7 +5,7 @@
         "stages": [
             "topology", "equilibration",                  # "topology", "equilibration",
             "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
-            # "alchemy_analysis"                            # "alchemy_analysis"
+            "alchemy_analysis"                            # "alchemy_analysis"
         ],
         "mdcntrl": {                                      # md simulation control parameters
             "temperature": 298.15,                        # simulation temperature, in Kelvin
