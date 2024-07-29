@@ -121,7 +121,7 @@ def plot_distribution_deltaU(u_nk, T, units):
         axs[k].set_xlabel(r'', fontsize=16)
         axs[k].set_ylabel(r'', fontsize=16)
     plt.title('Distribution of $\Delta $U=U(target)-U(reference) Overlap')
-    plt.xlabel(rf'$\Delta U$ {units}', fontsize=16)
+    plt.xlabel(rf'$\Delta U$ ({units})', fontsize=16)
     plt.ylabel(r'Density', fontsize=16)
     plt.savefig('distribution_deltaU.svg')
 
@@ -186,12 +186,15 @@ def alchemlyb_analysis(ti_out_files, methods, T, units):
                 backward.append(estimate.delta_f_.iloc[0, -1])
                 backward_error.append(estimate.d_delta_f_.iloc[0, -1])
             forward = [value/beta(T) for value in forward]
-            forward_error = [value/beta(T)
-                             for value in forward_error]
+            forward_error = [value/beta(T) for value in forward_error]
             backward = [value/beta(T) for value in backward]
-            backward_error = [value/beta(T)
-                              for value in backward_error]
-            ax2 = plot_convergence(forward, forward_error, backward, backward_error, units=units)
+            backward_error = [value/beta(T) for value in backward_error]
+            data = {'Forward': forward, 'Forward_Error': forward_error,
+                    'Backward': backward, 'Backward_Error': backward_error}
+            df = pd.DataFrame(data)
+            df.attrs['temperature'] = T
+            df.attrs['energy_unit'] = units
+            ax2 = plot_convergence(df, units=units)
             ax2.figure.savefig('convergence.svg')
 
     if 'TI' in methods:
