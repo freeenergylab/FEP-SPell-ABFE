@@ -304,17 +304,7 @@ if __name__ == '__main__':
             ntwx = args.ntwx
         else:
             ntwx = 0.
-        lig_md_steps['min-1'] = SOLVATED_MIN_1\
-            .replace('CLAMBDA', _lambda)\
-            .replace('CUT', str(args.cutoff))\
-            .replace('GTI_ADD_SC', str(args.gti_add_sc))\
-            .replace('TIMASK1', str(lig.timask1))\
-            .replace('TIMASK2', str(lig.timask2))\
-            .replace('SCMASK1', str(lig.scmask1))\
-            .replace('SCMASK2', str(lig.scmask2))\
-            .replace('RESTRAINT_WT', str(args.restraint_wt))\
-            .replace('RESTRAINTMASK', str(args.restraintmask))
-        lig_md_steps['min-2'] = SOLVATED_MIN_2\
+        lig_md_steps['min'] = SOLVATED_MIN\
             .replace('CLAMBDA', _lambda)\
             .replace('CUT', str(args.cutoff))\
             .replace('GTI_ADD_SC', str(args.gti_add_sc))\
@@ -537,17 +527,7 @@ if __name__ == '__main__':
                 ntwx = args.ntwx
             else:
                 ntwx = 0.
-            comp_md_steps['min-1'] = COMPLEX_MIN_1\
-                .replace('CLAMBDA', _lambda)\
-                .replace('CUT', str(args.cutoff))\
-                .replace('GTI_ADD_SC', str(args.gti_add_sc))\
-                .replace('TIMASK1', str(comp.timask1))\
-                .replace('TIMASK2', str(comp.timask2))\
-                .replace('SCMASK1', str(comp.scmask1))\
-                .replace('SCMASK2', str(comp.scmask2))\
-                .replace('RESTRAINT_WT', str(args.restraint_wt))\
-                .replace('RESTRAINTMASK', str(args.restraintmask))
-            comp_md_steps['min-2'] = COMPLEX_MIN_2\
+            comp_md_steps['min'] = COMPLEX_MIN\
                 .replace('CLAMBDA', _lambda)\
                 .replace('CUT', str(args.cutoff))\
                 .replace('GTI_ADD_SC', str(args.gti_add_sc))\
@@ -718,13 +698,7 @@ if __name__ == '__main__':
                 ntwx = args.ntwx
             else:
                 ntwx = 0.
-            comp_md_steps['min-1'] = COMPLEX_RESTRAINT_MIN_1\
-                .replace('CLAMBDA', _lambda)\
-                .replace('CUT', str(args.cutoff))\
-                .replace('GTI_ADD_SC', str(args.gti_add_sc))\
-                .replace('RESTRAINT_WT', str(args.restraint_wt))\
-                .replace('RESTRAINTMASK', str(args.restraintmask))
-            comp_md_steps['min-2'] = COMPLEX_RESTRAINT_MIN_2\
+            comp_md_steps['min'] = COMPLEX_RESTRAINT_MIN\
                 .replace('CLAMBDA', _lambda)\
                 .replace('CUT', str(args.cutoff))\
                 .replace('GTI_ADD_SC', str(args.gti_add_sc))

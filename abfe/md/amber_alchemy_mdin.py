@@ -12,59 +12,7 @@ alchemical simulation input protocol.
 ===============================================================================
 """
 
-SOLVATED_MIN_1 = """TI minimization stage 1
- &cntrl
-  imin = 1,
-  ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
-
-  ntb = 1,
-  cut = CUT,
-  ntr = 1,
-  restraint_wt = RESTRAINT_WT,
-  restraintmask = "RESTRAINTMASK",
-
-  ntp = 0,
-  pres0 = 1.0,
-  taup = 2.0,
-  barostat = 2,
-
-  ntc = 2,
-  ntf = 1,
-
-  ioutfm = 1,
-  ntpr = 2500,
-  ntwx = 0,
-
-  icfe = 1,
-  clambda = CLAMBDA,
-  timask1 = TIMASK1,
-  timask2 = TIMASK2,
-  ifsc = 1,
-  logdvdl = 0,
-  scmask1 = SCMASK1,
-  scmask2 = SCMASK2,
-  scalpha = 0.2,
-  scbeta = 50.0,
-  
-  gti_lam_sch = 1,
-  gti_ele_sc = 1,
-  gti_vdw_sc = 1,
-  gti_scale_beta = 0,
-  gti_cut_sc = 0,
-  gti_add_sc = GTI_ADD_SC,
-  tishake = 1,
-  gti_syn_mass = 0,
-  gti_output = 0,
-  gti_cut = 1,
-  gti_chg_keep = 1,
-  /
-"""
-
-SOLVATED_MIN_2 = """TI minimization stage 2
+SOLVATED_MIN = """TI minimization stage
  &cntrl
   imin = 1,
   ntmin = 2,
@@ -301,65 +249,7 @@ SOLVATED_TI = """TI production MD
  /
  """
 
-COMPLEX_MIN_1 = """TI minimization stage 1
- &cntrl
-  imin = 1,
-  ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
-
-  ntb = 1,
-  cut = CUT,
-  ntr = 1,
-  restraint_wt = RESTRAINT_WT,
-  restraintmask = "RESTRAINTMASK",
-
-  ntp = 0,
-  pres0 = 1.0,
-  taup = 2.0,
-  barostat = 2,
-
-  ntc = 2,
-  ntf = 1,
-
-  ioutfm = 1,
-  ntpr = 2500,
-  ntwx = 0,
-
-  icfe = 1,
-  clambda = CLAMBDA,
-  timask1 = TIMASK1,
-  timask2 = TIMASK2,
-  ifsc = 1,
-  logdvdl = 0,
-  scmask1 = SCMASK1,
-  scmask2 = SCMASK2,
-  scalpha = 0.2,
-  scbeta = 50.0,
-  
-  gti_lam_sch = 1,
-  gti_ele_sc = 1,
-  gti_vdw_sc = 1,
-  gti_scale_beta = 0,
-  gti_cut_sc = 0,
-  gti_add_sc = GTI_ADD_SC,
-  tishake = 1,
-  gti_syn_mass = 0,
-  gti_output = 0,
-  gti_cut = 1,
-  gti_chg_keep = 1,
-
-  nmropt = 1,
- /
- &wt
-  type='END',
- &end
-DISANG=restraints.inp
-"""
-
-COMPLEX_MIN_2 = """TI minimization stage 2
+COMPLEX_MIN = """TI minimization
  &cntrl
   imin = 1,
   ntmin = 2,
@@ -620,49 +510,7 @@ DISANG=restraints.inp
 DUMPAVE=restraints.out
 """
 
-COMPLEX_RESTRAINT_MIN_1 = """TI minimization stage 1
- &cntrl
-  imin = 1,
-  ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
-
-  ntb = 1,
-  cut = CUT,
-  ntr = 1,
-  restraint_wt = RESTRAINT_WT,
-  restraintmask = "RESTRAINTMASK",
-
-  ntp = 0,
-  pres0 = 1.0,
-  taup = 2.0,
-  barostat = 2,
-
-  ntc = 2,
-  ntf = 1,
-
-  ioutfm = 1,
-  ntpr = 2500,
-  ntwx = 0,
-
-  icfe = 1,
-  clambda = CLAMBDA,
-  timask1 = ":1",
-  timask2 = ":2",
-  ifsc = 0,
-  logdvdl = 0,
-
-  nmropt = 1,
- /
- &wt
-  type='END',
- &end
-DISANG=restraints.inp
-"""
-
-COMPLEX_RESTRAINT_MIN_2 = """TI minimization stage 2
+COMPLEX_RESTRAINT_MIN = """TI minimization
  &cntrl
   imin = 1,
   ntmin = 2,
