@@ -23,7 +23,7 @@ import socket
 import sys
 import time
 
-import abfe.utils.common_tools as common_tools
+import abfe.utils.common_tools as ctools
 import abfe.const as const
 
 def _parse_args():
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     workdir = os.path.join(args.abfe_workdir, '_alchemy_morph', args.ligand_name)
     alchemy_steps = defaultdict(list)
     _workdir = os.path.join(workdir, 'vdw')
-    with common_tools.DirManager(_workdir):
+    with ctools.DirManager(_workdir):
         shutil.copy(lig.equil_last_md_info['last_parm7'], 'solvated_vdw.parm7')
         shutil.copy(lig.equil_last_md_info['last_rst7'], 'solvated_vdw.rst7')
         alchemy_steps['vdw'].append(os.path.abspath('solvated_vdw.parm7'))
@@ -119,7 +119,7 @@ if __name__ == '__main__':
         workdir = os.path.join(args.abfe_workdir, '_alchemy_morph', args.complex_name)
         alchemy_steps = defaultdict(list)
         _workdir = os.path.join(workdir, 'vdw')
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             shutil.copy(comp.equil_last_md_info['last_parm7'], 'complex_vdw.parm7')
             shutil.copy(comp.equil_last_md_info['last_rst7'], 'complex_vdw.rst7')
             alchemy_steps['vdw'].append(os.path.abspath('complex_vdw.parm7'))
@@ -141,7 +141,7 @@ if __name__ == '__main__':
                 del mol # flush the buffer
 
         _workdir = os.path.join(workdir, 'restraint')
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             prmtop = comp.equil_last_md_info['last_parm7']
             inpcrd = comp.equil_last_md_info['last_rst7']
             traj = pt.load(inpcrd, prmtop)
@@ -150,9 +150,9 @@ if __name__ == '__main__':
             _traj = pt.strip(traj, '!:MOL')
             pt.write_traj('vacuum.mol2', _traj, overwrite=True)
             shutil.copy(comp.tleap_complex_in, 'tleap.complex.in')
-            box_info = common_tools.parse_pdb('protein.pdb')
+            box_info = ctools.parse_pdb('protein.pdb')
             # box_info: X/Y/Z dimension box length, box alpha/beta/gamma angles
-            common_tools.parse_leapin(
+            ctools.parse_leapin(
                 leapin='tleap.complex.in',
                 box_info=box_info,
                 leapout='tleap.in',

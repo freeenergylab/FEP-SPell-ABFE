@@ -28,8 +28,8 @@ import parmed as pmd
 import abfe.const as const
 import abfe.md.cpptraj_tools as cpptraj_tools
 import abfe.md.md_tools as md_tools
-import abfe.md.trans_rot as trans_rot
-import abfe.utils.common_tools as common_tools
+import abfe.md.analytic as analytic
+import abfe.utils.common_tools as ctools
 from abfe.md.amber_alchemy_mdin import *
 
 def _parse_args():
@@ -364,7 +364,7 @@ if __name__ == '__main__':
                 .replace('!numexchg =', 'numexchg =')\
                 .replace('NUMEXCHG', str(args.remd_numexchg))
         _workdir = os.path.join(workdir, 'vdw', str(_lambda))
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             os.system(f"ln -s -f {lig.alchemy_steps['vdw'][0]} .")
             os.system(f"ln -s -f {lig.alchemy_steps['vdw'][1]} .")
             for step, protocol in lig_md_steps.items():
@@ -373,7 +373,7 @@ if __name__ == '__main__':
     # 1.1.2 bash files (submit jobs scripts)
     #==========================================================================
     _workdir = os.path.join(workdir, 'vdw')
-    with common_tools.DirManager(_workdir):
+    with ctools.DirManager(_workdir):
         _mdsteps = list(lig_md_steps.keys())
         _fparm7 = lig.alchemy_steps['vdw'][0]
         _frst7 = lig.alchemy_steps['vdw'][1]
@@ -424,11 +424,11 @@ if __name__ == '__main__':
             'cd ..',
             ]
         cmd = '\n'.join(cmd_list)
-        common_tools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
+        ctools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
         jobid = ''
         if not args.dry_run:
             shcmd = 'sbatch submit.slurm.sh'
-            _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+            _, out, _ = ctools.command_caller(command=shcmd, shell=True)
             jobid = re.findall(r"job (.*?)\n", str(out))
             with open('slurm_jobid.log', 'w') as f:
                 f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')
@@ -443,10 +443,10 @@ if __name__ == '__main__':
             del slurm_params['array']
             if not args.dry_run:
                 slurm_params['dependency'] = f'afterok:{jobid[0]}'
-            common_tools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
+            ctools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
             if not args.dry_run:
                 shcmd = 'sbatch submit.slurm.remd.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 with open('slurm_jobid.log', 'w') as f:
                     f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')
@@ -465,7 +465,7 @@ if __name__ == '__main__':
         # 2.1 Analytic Boresch Restraint
         #==========================================================================
         _workdir = os.path.join(workdir, 'analytic')
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             last_parm7 = comp.equil_last_md_info['last_parm7']
             last_rst7 =  comp.equil_last_md_info['last_rst7']
             last_traj = comp.equil_last_md_info['last_traj']
@@ -501,12 +501,11 @@ if __name__ == '__main__':
             kr = args.bond_const
             kphi = args.dihedral_const
             ktheta = args.angle_const
-            FtC0, Fr, rst_correction = trans_rot.restraint_correction(
+            rst_correction = analytic.restraint_correction(
                 T=temperature, ktheta=ktheta, theta0=theta0, kphi=kphi, kr=kr, r0=r0
                 )
-            results = np.array([[FtC0], [Fr], [rst_correction]]).T
-            df = pd.DataFrame(results, columns=['Translational (kcal/mol)', 
-                'Rotational (kcal/mol)', 'Total (kcal/mol)'])
+            results = np.array([[rst_correction]]).T
+            df = pd.DataFrame(results, columns=['Total (kcal/mol)'])
             df.to_csv('results.csv', float_format='%.2f')
         #==========================================================================
         # 2.2 VDW
@@ -587,7 +586,7 @@ if __name__ == '__main__':
                     .replace('!numexchg =', 'numexchg =')\
                     .replace('NUMEXCHG', str(args.remd_numexchg))
             _workdir = os.path.join(workdir, 'vdw', str(_lambda))
-            with common_tools.DirManager(_workdir):
+            with ctools.DirManager(_workdir):
                 os.system(f"ln -s -f {comp.alchemy_steps['vdw'][0]} .")
                 os.system(f"ln -s -f {comp.alchemy_steps['vdw'][1]} .")
                 for step, protocol in comp_md_steps.items():
@@ -599,7 +598,7 @@ if __name__ == '__main__':
                                        )
         if args.remd:
             _workdir = os.path.join(workdir, 'vdw')
-            with common_tools.DirManager(_workdir):
+            with ctools.DirManager(_workdir):
                 _add_boresch_restraint(args=args, prmtop=comp.alchemy_steps['vdw'][0],
                                        lig_masks=args.lig_restraint_atoms,
                                        rec_masks=args.rec_restraint_atoms,
@@ -609,7 +608,7 @@ if __name__ == '__main__':
         # 2.2.2 bash files (submit jobs scripts)
         #==========================================================================
         _workdir = os.path.join(workdir, 'vdw')
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             _mdsteps = list(comp_md_steps.keys())
             _fparm7 = comp.alchemy_steps['vdw'][0]
             _frst7 = comp.alchemy_steps['vdw'][1]
@@ -659,11 +658,11 @@ if __name__ == '__main__':
                 'cd ..',
                 ]
             cmd = '\n'.join(cmd_list)
-            common_tools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
+            ctools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
             jobid = ''
             if not args.dry_run:
                 shcmd = 'sbatch submit.slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 with open('slurm_jobid.log', 'w') as f:
                     f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')
@@ -678,10 +677,10 @@ if __name__ == '__main__':
                 del slurm_params['array']
                 if not args.dry_run:
                     slurm_params['dependency'] = f'afterok:{jobid[0]}'
-                common_tools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
+                ctools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
                 if not args.dry_run:
                     shcmd = 'sbatch submit.slurm.remd.sh'
-                    _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                    _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                     jobid = re.findall(r"job (.*?)\n", str(out))
                     with open('slurm_jobid.log', 'w') as f:
                         f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')
@@ -741,7 +740,7 @@ if __name__ == '__main__':
                     .replace('!numexchg =', 'numexchg =')\
                     .replace('NUMEXCHG', str(args.remd_numexchg))
             _workdir = os.path.join(workdir, 'restraint', str(_lambda))
-            with common_tools.DirManager(_workdir):
+            with ctools.DirManager(_workdir):
                 os.system(f"ln -s -f {comp.alchemy_steps['restraint'][0]} .")
                 os.system(f"ln -s -f {comp.alchemy_steps['restraint'][1]} .")
                 for step, protocol in comp_md_steps.items():
@@ -753,7 +752,7 @@ if __name__ == '__main__':
                                        )
         if args.remd:
             _workdir = os.path.join(workdir, 'restraint')
-            with common_tools.DirManager(_workdir):
+            with ctools.DirManager(_workdir):
                 _add_boresch_restraint(args=args, prmtop=comp.alchemy_steps['restraint'][0],
                                        lig_masks=args.lig_restraint_atoms,
                                        rec_masks=rec_restraint_atoms,
@@ -763,7 +762,7 @@ if __name__ == '__main__':
         # 2.3.2 bash files (submit jobs scripts)
         #==========================================================================
         _workdir = os.path.join(workdir, 'restraint')
-        with common_tools.DirManager(_workdir):
+        with ctools.DirManager(_workdir):
             _mdsteps = list(comp_md_steps.keys())
             _fparm7 = comp.alchemy_steps['restraint'][0]
             _frst7 = comp.alchemy_steps['restraint'][1]
@@ -813,11 +812,11 @@ if __name__ == '__main__':
                 'cd ..',
                 ]
             cmd = '\n'.join(cmd_list)
-            common_tools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
+            ctools.gen_slurm_bash('submit.slurm.sh', cmd, slurm_params)
             jobid = ''
             if not args.dry_run:
                 shcmd = 'sbatch submit.slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 with open('slurm_jobid.log', 'w') as f:
                     f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')
@@ -832,10 +831,10 @@ if __name__ == '__main__':
                 del slurm_params['array']
                 if not args.dry_run:
                     slurm_params['dependency'] = f'afterok:{jobid[0]}'
-                common_tools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
+                ctools.gen_slurm_bash('submit.slurm.remd.sh', './run.remd.sh', slurm_params)
                 if not args.dry_run:
                     shcmd = 'sbatch submit.slurm.remd.sh'
-                    _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                    _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                     jobid = re.findall(r"job (.*?)\n", str(out))
                     with open('slurm_jobid.log', 'w') as f:
                         f.writelines(f'INFO: ARRAY JOB ID {jobid[0]}')

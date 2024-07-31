@@ -26,7 +26,7 @@ import numpy as np
 import parmed as pmd
 
 import abfe.const as const
-import abfe.utils.common_tools as common_tools
+import abfe.utils.common_tools as ctools
 
 def align_complex(prmtop, mdcrd, solvent_mask, output_file='align.cpptraj.in'):
     """Align trajectory for charge correction calculations."""
@@ -340,7 +340,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     work_dir = os.path.dirname(args.mdcrd)
-    with common_tools.DirManager(work_dir):
+    with ctools.DirManager(work_dir):
         new_mdcrd = align_complex(args.prmtop, args.mdcrd, args.solvent_mask)
         epsilon_solv = 97. # relative permittivity for TIP3P water
         dG_correction = compute_charge_correction(

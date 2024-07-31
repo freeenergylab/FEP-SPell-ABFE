@@ -16,7 +16,7 @@ import time
 from collections import defaultdict
 from glob import glob
 
-import abfe.utils.common_tools as common_tools
+import abfe.utils.common_tools as ctools
 
 class JobManager(object):
     def __init__(self, workdir, sys_name, stage, step):
@@ -86,7 +86,7 @@ class JobManager(object):
         flags = []
         for file_path in ti_out_files:
             _cmd = f'tail -n 5 {file_path}'
-            _, _out, _ = common_tools.command_caller(command=_cmd, shell=True)
+            _, _out, _ = ctools.command_caller(command=_cmd, shell=True)
             _line = ''.join(_out).strip().split("\n")
             if _line[-1].startswith('|  Total wall time:'):
                 flags.append(True)

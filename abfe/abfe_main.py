@@ -19,7 +19,7 @@ import warnings
 from glob import glob
 
 import abfe.const as const
-import abfe.utils.common_tools as common_tools
+import abfe.utils.common_tools as ctools
 
 def _parse_args():
     """Parse arguments from the config file.
@@ -36,12 +36,12 @@ def _parse_args():
         help='One configuration file contains all input parameters.'
         )
     pargs = parser.parse_args()
-    args = common_tools.read_config(pargs.inconfig)
+    args = ctools.read_config(pargs.inconfig)
     args['main']['inconfig'] = os.path.abspath(pargs.inconfig)
 
     for stage, params in args.items():
-        args[stage] = common_tools.DotDict(params)
-    args = common_tools.DotDict(args)
+        args[stage] = ctools.DotDict(params)
+    args = ctools.DotDict(args)
 
     assert args.main.workflow_type in const.WORKFLOW_TYPES, \
         f"Cannot support the user-defined workflow type: {args.main.workflow_type}!"
@@ -121,7 +121,7 @@ class abfeWorkflow(object):
             self.ligand_dirs[ln] = lig_dirs[0]
 
         self.skipped_ligand_names = set(self.skipped_ligand_names)
-        with common_tools.DirManager(os.path.join(self.abfe_workdir, '_logs')):
+        with ctools.DirManager(os.path.join(self.abfe_workdir, '_logs')):
             _outfl = os.path.join(self.abfe_workdir, '_logs', 'skipped_ligands.out')
             with open(_outfl, 'w') as outfl:
                 for lig_name in self.skipped_ligand_names:
@@ -165,12 +165,12 @@ class abfeWorkflow(object):
             if exclude.strip(): 
                 slurm_params.update(exclude=exclude)
 
-            with common_tools.DirManager(sh_dir):
-                cmd = common_tools.dict_to_cmd(topology_args)
+            with ctools.DirManager(sh_dir):
+                cmd = ctools.dict_to_cmd(topology_args)
                 cmd = ' '.join(_common_cmd_list) + ' ' + cmd
-                common_tools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
+                ctools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
                 shcmd = 'sbatch slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 self.topology_jobids[lig_name] = str(jobid[0])
 
@@ -218,12 +218,12 @@ class abfeWorkflow(object):
                 slurm_params.update(exclude=exclude)
 
             sh_dir = os.path.join(self.abfe_workdir, '_equilibration', lig_name)
-            with common_tools.DirManager(sh_dir):
-                cmd = common_tools.dict_to_cmd(equil_args)
+            with ctools.DirManager(sh_dir):
+                cmd = ctools.dict_to_cmd(equil_args)
                 cmd = ' '.join(_common_cmd_list) + ' ' + cmd
-                common_tools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
+                ctools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
                 shcmd = 'sbatch slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 self.equilibration_jobids[lig_name] = str(jobid[0])
 
@@ -261,12 +261,12 @@ class abfeWorkflow(object):
             if exclude.strip(): 
                 slurm_params.update(exclude=exclude)
 
-            with common_tools.DirManager(sh_dir):
-                cmd = common_tools.dict_to_cmd(alchemy_morph_args)
+            with ctools.DirManager(sh_dir):
+                cmd = ctools.dict_to_cmd(alchemy_morph_args)
                 cmd = ' '.join(_common_cmd_list) + ' ' + cmd
-                common_tools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
+                ctools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
                 shcmd = 'sbatch slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 self.alchemy_morph_jobids[lig_name] = str(jobid[0])
 
@@ -318,12 +318,12 @@ class abfeWorkflow(object):
                 slurm_params.update(exclude=exclude)
 
             sh_dir = os.path.join(self.abfe_workdir, '_alchemy_md', lig_name)
-            with common_tools.DirManager(sh_dir):
-                cmd = common_tools.dict_to_cmd(alchemy_md_args)
+            with ctools.DirManager(sh_dir):
+                cmd = ctools.dict_to_cmd(alchemy_md_args)
                 cmd = ' '.join(_common_cmd_list) + ' ' + cmd
-                common_tools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
+                ctools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
                 shcmd = 'sbatch slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 self.alchemy_md_jobids[lig_name] = str(jobid[0])
 
@@ -362,12 +362,12 @@ class abfeWorkflow(object):
             if exclude.strip(): 
                 slurm_params.update(exclude=exclude)
 
-            with common_tools.DirManager(sh_dir):
-                cmd = common_tools.dict_to_cmd(alchemy_analysis_args)
+            with ctools.DirManager(sh_dir):
+                cmd = ctools.dict_to_cmd(alchemy_analysis_args)
                 cmd = ' '.join(_common_cmd_list) + ' ' + cmd
-                common_tools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
+                ctools.gen_slurm_bash(os.path.join(sh_dir, 'slurm.sh'), cmd, slurm_params)
                 shcmd = 'sbatch slurm.sh'
-                _, out, _ = common_tools.command_caller(command=shcmd, shell=True)
+                _, out, _ = ctools.command_caller(command=shcmd, shell=True)
                 jobid = re.findall(r"job (.*?)\n", str(out))
                 self.alchemy_analysis_jobids[lig_name] = str(jobid[0])
 
