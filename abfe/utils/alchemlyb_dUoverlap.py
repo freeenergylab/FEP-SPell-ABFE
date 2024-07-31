@@ -189,12 +189,17 @@ def alchemlyb_analysis(ti_out_files, methods, T, units):
             forward_error = [value/beta(T) for value in forward_error]
             backward = [value/beta(T) for value in backward]
             backward_error = [value/beta(T) for value in backward_error]
-            data = {'Forward': forward, 'Forward_Error': forward_error,
-                    'Backward': backward, 'Backward_Error': backward_error}
-            df = pd.DataFrame(data)
-            df.attrs['temperature'] = T
-            df.attrs['energy_unit'] = units
-            ax2 = plot_convergence(df, units=units)
+            try: 
+                #v2.3.1
+                data = {'Forward': forward, 'Forward_Error': forward_error,
+                        'Backward': backward, 'Backward_Error': backward_error}
+                df = pd.DataFrame(data)
+                df.attrs['temperature'] = T
+                df.attrs['energy_unit'] = units
+                ax2 = plot_convergence(df, units=units)
+            except TypeError:
+                #v0.5.0
+                ax2 = plot_convergence(forward, forward_error, backward, backward_error, units=units)
             ax2.figure.savefig('convergence.svg')
 
     if 'TI' in methods:
