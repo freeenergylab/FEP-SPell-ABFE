@@ -1,0 +1,4 @@
+,MBAR_dG_solvated_vdw,MBAR_dG_solvated_cc,TI_dG_solvated_vdw,TI_dG_solvated_cc
+bnz,1.13,0.00,1.12,0.00
+,MBAR_dG_solvated_vdw,MBAR_dG_solvated_cc,TI_dG_solvated_vdw,TI_dG_solvated_cc
+phn,5.24,0.00,5.20,0.00
