@@ -18,8 +18,10 @@ import os
 import pandas as pd
 import sys
 import time
-
-import griddata
+try:
+    import griddata # v0.1.0
+except ModuleNotFoundError:
+    import gridData # v1.0.2
 import numpy as np
 import parmed as pmd
 
