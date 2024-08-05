@@ -1,21 +1,28 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 """
-==============================================================================
+===============================================================================
 CopyRight (c) By freeenergylab.
 @Description:
-This is the trans_rot module that can be used to do Boresch-style restraint
-analytic correction.
+This module can be used to do Boresch-style restraint analytic correction.
 
 @Author: Pengfei Li
 @Date: May 30th, 2022
-==============================================================================
+===============================================================================
 """
 from math import pi, log, sin, sqrt, exp, erf
 
 def restraint_correction(T, ktheta, theta0, kphi, kr, r0):
-    """Do Boresch-style restraint analytic correction.
+    """Do Boresch-style restraint analytic correction, refer to
 
+    Calculation of Standard Binding Free Energies: Aromatic Molecules
+    in the T4 Lysozyme L99A Mutant
+
+    Yuqing Deng & Benoit Roux,
+    J. Chem. Theory Comput. 2006, 2, 1255-1273
+
+    https://pubs.acs.org/doi/epdf/10.1021/ct060037v
+    
     Args:
         T (float): system simulation temperature
         ktheta (float): force constant for theta
@@ -33,10 +40,11 @@ def restraint_correction(T, ktheta, theta0, kphi, kr, r0):
     kr     = float(kr)*2.0
     r0     = float(r0)
 
+    V = 1660. # in A^3
     kB = 0.0019872041 # Boltzmann's constant (kcal/mol/K)
     FtC0 = -(kB*T)*log(r0**2*sin(theta0/180.0*pi)\
-        *sqrt((2*pi*kB*T)**3/(kr*ktheta*kphi))/1660.0)
-    Fr = -(kB*T)*log(1.0/(8*pi**2)*(2*pi*kB*T/kr)**1.5)
+        *sqrt((2*pi*kB*T)**3/(kr*ktheta*kphi))/V) # Eq. 38
+    Fr = -(kB*T)*log(1.0/(8*pi**2)*(2*pi*kB*T/kr)**1.5) # Eq. 40
     print('Translational: %.2f kcal/mol' % FtC0)
     print('Rotational: %.2f kcal/mol' % Fr)
 
@@ -80,7 +88,7 @@ def restraint_correction_schrodinger(T, r0, alpha0, theta0, gamma0, beta0, phi0,
     Kang   = float(Kang)
     Kdihed = float(Kdihed)
 
-    V = 1660 # in A^3
+    V = 1660. # in A^3
     kB = 0.0019872041 # Boltzmann's constant (kcal/mol/K)
     beta = 1./(kB*T)
     Z_dist_r = r0/(2*beta*Kr)*exp(-beta*Kr*r0**2) + \

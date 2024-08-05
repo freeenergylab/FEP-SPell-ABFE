@@ -502,6 +502,7 @@ dependencies:
   - zstandard=0.22.0=py312h2c38b39_0
   - zstd=1.5.5=hc292b87_2
   - pip:
+      - alchemlyb==2.3.1
       - griddataformats==1.0.2
       - loguru==0.7.2
       - mrcfile==1.5.3
