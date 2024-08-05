@@ -502,9 +502,9 @@ dependencies:
   - zstandard=0.22.0=py312h2c38b39_0
   - zstd=1.5.5=hc292b87_2
   - pip:
-      - griddata==0.1.0
+      - griddataformats==1.0.2
       - loguru==0.7.2
+      - mrcfile==1.5.3
       - parmed==4.2.2
       - pymbar==4.0.3
       - rdkit==2024.3.3
-      - alchemlyb==2.3.1

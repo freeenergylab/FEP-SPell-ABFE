@@ -56,12 +56,15 @@ module load apbs/3.4.1
  5. source $HOME/software/anaconda3/2024.06/bin/activate base
  6. conda create --name FEP-SPell-ABFE --clone base
  7. conda activate FEP-SPell-ABFE
- 9. pip install rdkit
-10. pip install parmed
-11. pip install griddata
-12. pip install alchemlyb
+ 8. pip install alchemlyb==2.3.1
+ 9. pip install gridDataFormats==1.0.2
+10. pip install loguru==0.7.2
+11. pip install mrcfile==1.5.3
+12. pip install parmed==4.2.2
+13. pip install pymbar==4.0.3
+14. pip install rdkit==2024.3.3
  or, you can also create `FEP-SPell-ABFE` environment using `environment_abfe_yml` file, like:
-6-12. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
+6-14. conda env create --name FEP-SPell-ABFE --file=environment_abfe.yml
 
 ###############################################################################
 

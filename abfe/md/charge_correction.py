@@ -18,10 +18,7 @@ import os
 import pandas as pd
 import sys
 import time
-try:
-    import griddata # v0.1.0
-except ModuleNotFoundError:
-    import gridData # v1.0.2
+import gridData # pip install gridDataFormats==1.0.2
 import numpy as np
 import parmed as pmd
 
@@ -312,7 +309,7 @@ class APBS(object):
         
         The result is in kcal-A^3/mol-e (in AMBER units, not APBS units).
         """
-        dxfile = griddata.Grid(dx_file)
+        dxfile = gridData.Grid(dx_file)
         dV = dxfile.delta.prod()
         V = dxfile.grid.size*dV
         # Label this as B for box integral, X because it refers to the system X.
