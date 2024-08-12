@@ -12,7 +12,7 @@ This module can be used to do Boresch-style restraint analytic correction.
 """
 from math import pi, log, sin, sqrt, exp, erf
 
-def restraint_correction(T, ktheta, theta0, kphi, kr, r0):
+def restraint_correction(T, r0, theta0, kr, ktheta, kphi):
     """Do Boresch-style restraint analytic correction, refer to
 
     Calculation of Standard Binding Free Energies: Aromatic Molecules
@@ -25,20 +25,21 @@ def restraint_correction(T, ktheta, theta0, kphi, kr, r0):
     
     Args:
         T (float): system simulation temperature
-        ktheta (float): force constant for theta
-        theta0 (float): equilibrium value for theta
-        kphi (float): force constant for phi
-        kr (float): force constant for r
-        r0 (float): equilibrium value for r
+        r0 (float): equilibrium value for distance r
+        theta0 (float): equilibrium value for angle theta
+        kr (float): force constant for distance r
+        ktheta (float): force constant for angle theta
+        kphi (float): force constant for dihedral phi
  
     Returns:
         FtC0 + Fr (float): Boresch analytic restraint correction value
     """
-    ktheta = float(ktheta)*2.0
-    theta0 = float(theta0)
-    kphi   = float(kphi)*2.0
-    kr     = float(kr)*2.0
+    T      = float(T)
     r0     = float(r0)
+    theta0 = float(theta0)
+    kr     = float(kr)*2.0
+    ktheta = float(ktheta)*2.0
+    kphi   = float(kphi)*2.0
 
     V = 1660. # in A^3
     kB = 0.0019872041 # Boltzmann's constant (kcal/mol/K)
@@ -61,6 +62,7 @@ def restraint_correction_schrodinger(T, r0, alpha0, theta0, gamma0, beta0, phi0,
     J Chem. Inf. Model. 2023, 63, 3171-3185
     
     https://pubs.acs.org/doi/10.1021/acs.jcim.3c00013
+    https://chemrxiv.org/engage/chemrxiv/article-details/63a23f6116e9a872d32f81ef
 
     Args:
         T (float): system simulation temperature
@@ -97,22 +99,15 @@ def restraint_correction_schrodinger(T, r0, alpha0, theta0, gamma0, beta0, phi0,
     Z_ang_theta_r = sqrt(pi/(beta*Kang))*exp(-1./(4.*beta*Kang))*sin(theta0/180.*pi) # Eq. 5
     Z_dihed_r =  sqrt(pi/(beta*Kdihed))*erf(pi*sqrt(beta*Kdihed)) # Eq. 6
 
-    # result = -Z_ang_theta_r*Z_ang_alpha_r*kB*T*log(Z_dist_r*(Z_dihed_r**3)/(8.*(pi**2)*V)) # Eq. 3
-    result = -kB*T*log(Z_dist_r*Z_ang_theta_r*Z_ang_alpha_r*(Z_dihed_r**3)/(8.*(pi**2)*V)) # Eq. 3
+    # result = -Z_ang_theta_r*Z_ang_alpha_r*kB*T*log(Z_dist_r*(Z_dihed_r**3)/(8.*(pi**2)*V)) # JCIM Eq. 3
+    result = -kB*T*log(Z_dist_r*Z_ang_theta_r*Z_ang_alpha_r*(Z_dihed_r**3)/(8.*(pi**2)*V)) # ChemRxiv Eq. 3
 
     return result
 
 if __name__ == '__main__':
-    """Just one test for restraint_correction function.
+    """Just do test for restraint_correction function.
     """
     correction = restraint_correction(
-        T=300., ktheta=100., theta0=100.470, kphi=100., kr=10., r0=4.350
+        T=298.15, ktheta=100., theta0=85.370, kphi=100., kr=10., r0=7.230,
         )
-    print('The reference value is 9.65 kcal/mol, while this calculated value is %.2f kcal/mol.' % correction)
-
-    correction = restraint_correction_schrodinger(
-        T=300, r0=4.350, alpha0=75.020, theta0=100.470,
-        gamma0=79.359, beta0=172.460, phi0=5.991,
-        Kr=10., Kang=100., Kdihed=100.
-        )
-    print('The reference value is 9.65 kcal/mol, while this calculated value is %.2f kcal/mol.' % correction)
+    print('The reference value is 8.99 kcal/mol, while this calculated value is %.2f kcal/mol.' % correction)

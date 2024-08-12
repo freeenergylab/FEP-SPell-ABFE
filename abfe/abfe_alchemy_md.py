@@ -134,18 +134,18 @@ def _parse_args():
         help='Treatment of the non-bonded interactions of SC internal and SC-CC cross regions'
         )
     # Boresch-style restraint options
-    boresch_grp = parser.add_argument_group('Boresch restraints')
+    boresch_grp = parser.add_argument_group('Boresch-style restraints')
     boresch_grp.add_argument(
         '-bc', '--bond_const', default=10.0, type=float,
-        help='Weight of bond restraints during ABFE'
+        help='Force constant for bond restraint, in kcal/mol/A^2'
         )
     boresch_grp.add_argument(
         '-ac', '--angle_const', default=100.0, type=float,
-        help='Weight of angle restraints during ABFE'
+        help='Force constant for angle restraint, in kcal/mol/radian^2'
         )
     boresch_grp.add_argument(
         '-dc', '--dihedral_const', default=100.0, type=float,
-        help='Weight of dihedral restraints during ABFE'
+        help='Force constant for dihedral restraint, in kcal/mol'
         )
     boresch_grp.add_argument(
         '-rs', '--restraint_seed', type=int, default=None,
@@ -311,7 +311,9 @@ if __name__ == '__main__':
             .replace('TIMASK1', str(lig.timask1))\
             .replace('TIMASK2', str(lig.timask2))\
             .replace('SCMASK1', str(lig.scmask1))\
-            .replace('SCMASK2', str(lig.scmask2))
+            .replace('SCMASK2', str(lig.scmask2))\
+            .replace('RESTRAINT_WT', str(args.restraint_wt))\
+            .replace('RESTRAINTMASK', str(args.restraintmask))
         for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
             lig_md_steps['heat-%s'%str(n)] = SOLVATED_HEAT\
                 .replace('CLAMBDA', str(_lambda))\
@@ -499,10 +501,10 @@ if __name__ == '__main__':
                            )
             temperature = args.temperature
             kr = args.bond_const
-            kphi = args.dihedral_const
             ktheta = args.angle_const
+            kphi = args.dihedral_const
             rst_correction = analytic.restraint_correction(
-                T=temperature, ktheta=ktheta, theta0=theta0, kphi=kphi, kr=kr, r0=r0
+                T=temperature, r0=r0, theta0=theta0, kr=kr, ktheta=ktheta, kphi=kphi
                 )
             results = np.array([[rst_correction]]).T
             df = pd.DataFrame(results, columns=['Total (kcal/mol)'])
@@ -533,7 +535,9 @@ if __name__ == '__main__':
                 .replace('TIMASK1', str(comp.timask1))\
                 .replace('TIMASK2', str(comp.timask2))\
                 .replace('SCMASK1', str(comp.scmask1))\
-                .replace('SCMASK2', str(comp.scmask2))
+                .replace('SCMASK2', str(comp.scmask2))\
+                .replace('RESTRAINT_WT', str(args.restraint_wt))\
+                .replace('RESTRAINTMASK', str(args.restraintmask))
             for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
                 comp_md_steps['heat-%s'%str(n)] = COMPLEX_HEAT\
                     .replace('CLAMBDA', str(_lambda))\
@@ -700,7 +704,9 @@ if __name__ == '__main__':
             comp_md_steps['min'] = COMPLEX_RESTRAINT_MIN\
                 .replace('CLAMBDA', _lambda)\
                 .replace('CUT', str(args.cutoff))\
-                .replace('GTI_ADD_SC', str(args.gti_add_sc))
+                .replace('GTI_ADD_SC', str(args.gti_add_sc))\
+                .replace('RESTRAINT_WT', str(args.restraint_wt))\
+                .replace('RESTRAINTMASK', str(args.restraintmask))
             for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
                 comp_md_steps['heat-%s'%str(n)] = COMPLEX_RESTRAINT_HEAT\
                     .replace('CLAMBDA', str(_lambda))\

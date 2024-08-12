@@ -17,8 +17,6 @@ SOLVATED_MIN_1 = """Minimisation Stage 1
   ntmin = 1,
   maxcyc = 10000,
   ncyc = 5000,
-  dx0 = 0.01,
-  drms = 0.0001,
 
   cut = CUT,
   ntr = 1,
@@ -33,8 +31,6 @@ SOLVATED_MIN_2 = """Minimisation Stage 2
   ntmin = 1,
   maxcyc = 10000,
   ncyc = 5000,
-  dx0 = 0.01,
-  drms = 0.0001,
 
   cut = CUT,
   ntr = 0,
@@ -102,7 +98,7 @@ SOLVATED_PRESS="""Press MD
   restraintmask = "RESTRAINTMASK",
 
   ntp = 1,
-  pres0 = 1.0, 
+  pres0 = 1.0,
   taup = 2.0,
   barostat = 2,
 
@@ -159,8 +155,6 @@ COMPLEX_MIN_1 = """Minimisation Stage 1
   ntmin = 1,
   maxcyc = 10000,
   ncyc = 5000,
-  dx0 = 0.01,
-  drms = 0.0001,
 
   cut = CUT,
   ntr = 1,
@@ -175,8 +169,6 @@ COMPLEX_MIN_2 = """Minimisation Stage 2
   ntmin = 1,
   maxcyc = 10000,
   ncyc = 5000,
-  dx0 = 0.01,
-  drms = 0.0001,
 
   cut = CUT,
   ntr = 0,

@@ -16,15 +16,16 @@ SOLVATED_MIN = """TI minimization stage
  &cntrl
   imin = 1,
   ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
+  maxcyc = 200,
+  ncyc = 200,
+  drms = 0.1,
+  dx0 = 0.005,
 
   ntb = 1,
   cut = CUT,
-  ntr = 0,
-  restraint_wt = 0.0,
+  ntr = 1,
+  restraint_wt = RESTRAINT_WT,
+  restraintmask = "RESTRAINTMASK",
 
   ntp = 0,
   pres0 = 1.0,
@@ -48,7 +49,7 @@ SOLVATED_MIN = """TI minimization stage
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -105,7 +106,7 @@ SOLVATED_HEAT = """TI heat MD
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -172,7 +173,7 @@ SOLVATED_PRESS = """TI press MD
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -230,7 +231,7 @@ SOLVATED_TI = """TI production MD
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -253,15 +254,16 @@ COMPLEX_MIN = """TI minimization
  &cntrl
   imin = 1,
   ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
+  maxcyc = 200,
+  ncyc = 200,
+  drms = 0.1,
+  dx0 = 0.005,
 
   ntb = 1,
   cut = CUT,
-  ntr = 0,
-  restraint_wt = 0.0,
+  ntr = 1,
+  restraint_wt = RESTRAINT_WT,
+  restraintmask = "RESTRAINTMASK",
 
   ntp = 0,
   pres0 = 1.0,
@@ -285,7 +287,7 @@ COMPLEX_MIN = """TI minimization
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -313,7 +315,7 @@ COMPLEX_HEAT = """TI heat MD
   ntx = 1,
   nstlim = 10000,
   dt = DT,
-  vlimit = 10,
+  !vlimit = 10,
 
   ntb = 1,
   cut = CUT,
@@ -349,7 +351,7 @@ COMPLEX_HEAT = """TI heat MD
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -382,7 +384,7 @@ COMPLEX_PRESS = """TI press MD
   ntx = 5,
   nstlim = 10000,
   dt = DT,
-  vlimit = 10,
+  !vlimit = 10,
 
   ntb = 2,
   cut = CUT,
@@ -481,7 +483,7 @@ COMPLEX_TI = """TI production MD
   scmask2 = SCMASK2,
   scalpha = 0.2,
   scbeta = 50.0,
-  
+
   gti_lam_sch = 1,
   gti_ele_sc = 1,
   gti_vdw_sc = 1,
@@ -514,15 +516,16 @@ COMPLEX_RESTRAINT_MIN = """TI minimization
  &cntrl
   imin = 1,
   ntmin = 2,
-  maxcyc = 10000,
-  ncyc = 10000,
-  drms = 0.01,
-  drms = 0.0001,
+  maxcyc = 200,
+  ncyc = 200,
+  drms = 0.1,
+  dx0 = 0.005,
 
   ntb = 1,
   cut = CUT,
-  ntr = 0,
-  restraint_wt = 0.0,
+  ntr = 1,
+  restraint_wt = RESTRAINT_WT,
+  restraintmask = "RESTRAINTMASK",
 
   ntp = 0,
   pres0 = 1.0,
@@ -558,7 +561,7 @@ COMPLEX_RESTRAINT_HEAT = """TI heat MD
   ntx = 1,
   nstlim = 10000,
   dt = DT,
-  vlimit = 20,
+  !vlimit = 20,
 
   ntb = 1,
   cut = CUT,
@@ -611,7 +614,7 @@ COMPLEX_RESTRAINT_PRESS = """TI press MD
   ntx = 5,
   nstlim = 10000,
   dt = DT,
-  vlimit = 20,
+  !vlimit = 20,
 
   ntb = 2,
   cut = CUT,
