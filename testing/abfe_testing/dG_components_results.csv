@@ -1,4 +1,4 @@
 ,MBAR_dG_solvated_vdw,MBAR_dG_solvated_cc,TI_dG_solvated_vdw,TI_dG_solvated_cc,MBAR_dG_complex_vdw,MBAR_dG_complex_cc,MBAR_dG_complex_restraint,MBAR_dG_analytic,TI_dG_complex_vdw,TI_dG_complex_cc,TI_dG_complex_restraint,TI_dG_analytic
-phn,5.20,0.00,5.16,0.00,9.72,0.00,-5.57,9.64,9.70,0.00,-6.27,9.64
+bnz,1.06,0.00,1.04,0.00,7.92,0.00,-6.11,9.57,7.75,0.00,-6.71,9.57
 ,MBAR_dG_solvated_vdw,MBAR_dG_solvated_cc,TI_dG_solvated_vdw,TI_dG_solvated_cc,MBAR_dG_complex_vdw,MBAR_dG_complex_cc,MBAR_dG_complex_restraint,MBAR_dG_analytic,TI_dG_complex_vdw,TI_dG_complex_cc,TI_dG_complex_restraint,TI_dG_analytic
-bnz,1.19,0.00,1.14,0.00,7.15,0.00,-6.72,9.58,7.06,0.00,-7.33,9.58
+phn,5.18,0.00,5.12,0.00,9.66,0.00,-6.06,9.61,9.74,0.00,-6.27,9.61
