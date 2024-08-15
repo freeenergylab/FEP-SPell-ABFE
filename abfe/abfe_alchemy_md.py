@@ -317,7 +317,7 @@ if __name__ == '__main__':
         for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
             lig_md_steps['heat-%s'%str(n)] = SOLVATED_HEAT\
                 .replace('CLAMBDA', str(_lambda))\
-                .replace('DT', str(args.timestep))\
+                .replace('DT', str(0.002))\
                 .replace('CUT', str(args.cutoff))\
                 .replace('TEMPI', str(tempi))\
                 .replace('TEMP0', str(temp0))\
@@ -331,7 +331,7 @@ if __name__ == '__main__':
                 .replace('RESTRAINTMASK', str(args.restraintmask))
             lig_md_steps['press-%s'%str(n)] = SOLVATED_PRESS\
                 .replace('CLAMBDA', str(_lambda))\
-                .replace('DT', str(args.timestep))\
+                .replace('DT', str(0.002))\
                 .replace('CUT', str(args.cutoff))\
                 .replace('TEMP0', str(temp0))\
                 .replace('GTI_ADD_SC', str(args.gti_add_sc))\
@@ -541,7 +541,7 @@ if __name__ == '__main__':
             for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
                 comp_md_steps['heat-%s'%str(n)] = COMPLEX_HEAT\
                     .replace('CLAMBDA', str(_lambda))\
-                    .replace('DT', str(args.timestep))\
+                    .replace('DT', str(0.002))\
                     .replace('CUT', str(args.cutoff))\
                     .replace('TEMPI', str(tempi))\
                     .replace('TEMP0', str(temp0))\
@@ -555,7 +555,7 @@ if __name__ == '__main__':
                     .replace('RESTRAINTMASK', str(args.restraintmask))
                 comp_md_steps['press-%s'%str(n)] = COMPLEX_PRESS\
                     .replace('CLAMBDA', str(_lambda))\
-                    .replace('DT', str(args.timestep))\
+                    .replace('DT', str(0.002))\
                     .replace('CUT', str(args.cutoff))\
                     .replace('TEMP0', str(temp0))\
                     .replace('GTI_ADD_SC', str(args.gti_add_sc))\
@@ -710,7 +710,7 @@ if __name__ == '__main__':
             for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
                 comp_md_steps['heat-%s'%str(n)] = COMPLEX_RESTRAINT_HEAT\
                     .replace('CLAMBDA', str(_lambda))\
-                    .replace('DT', str(args.timestep))\
+                    .replace('DT', str(0.002))\
                     .replace('CUT', str(args.cutoff))\
                     .replace('TEMPI', str(tempi))\
                     .replace('TEMP0', str(temp0))\
@@ -720,7 +720,7 @@ if __name__ == '__main__':
                     .replace('RESTRAINTMASK', str(args.restraintmask))
                 comp_md_steps['press-%s'%str(n)] = COMPLEX_RESTRAINT_PRESS\
                     .replace('CLAMBDA', str(_lambda))\
-                    .replace('DT', str(args.timestep))\
+                    .replace('DT', str(0.002))\
                     .replace('CUT', str(args.cutoff))\
                     .replace('TEMP0', str(temp0))\
                     .replace('GTI_ADD_SC', str(args.gti_add_sc))\

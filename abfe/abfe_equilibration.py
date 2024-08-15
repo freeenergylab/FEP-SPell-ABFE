@@ -118,7 +118,7 @@ if __name__ == '__main__':
         .replace('CUT', str(args.cutoff))
     for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
         lig_equil_steps['heat-%s'%str(n)] = SOLVATED_HEAT\
-            .replace('DT', str(args.timestep))\
+            .replace('DT', str(0.002))\
             .replace('CUT', str(args.cutoff))\
             .replace('TEMPI', str(tempi))\
             .replace('TEMP0', str(temp0))\
@@ -126,7 +126,7 @@ if __name__ == '__main__':
             .replace('RESTRAINT_WT', str(args.restraint_wt))\
             .replace('RESTRAINTMASK', str(args.restraintmask))
         lig_equil_steps['press-%s'%str(n)] = SOLVATED_PRESS\
-            .replace('DT', str(args.timestep))\
+            .replace('DT', str(0.002))\
             .replace('CUT', str(args.cutoff))\
             .replace('TEMP0', str(temp0))\
             .replace('RESTRAINT_WT', str(args.restraint_wt))\
@@ -188,7 +188,7 @@ if __name__ == '__main__':
             .replace('CUT', str(args.cutoff))
         for n, (tempi, temp0) in enumerate(zip(args.heat_temps[:-1], args.heat_temps[1:]), 1):
             comp_equil_steps['heat-%s'%str(n)] = COMPLEX_HEAT\
-                .replace('DT', str(args.timestep))\
+                .replace('DT', str(0.002))\
                 .replace('CUT', str(args.cutoff))\
                 .replace('TEMPI', str(tempi))\
                 .replace('TEMP0', str(temp0))\
@@ -196,7 +196,7 @@ if __name__ == '__main__':
                 .replace('RESTRAINT_WT', str(args.restraint_wt))\
                 .replace('RESTRAINTMASK', str(args.restraintmask))
             comp_equil_steps['press-%s'%str(n)] = COMPLEX_PRESS\
-                .replace('DT', str(args.timestep))\
+                .replace('DT', str(0.002))\
                 .replace('CUT', str(args.cutoff))\
                 .replace('TEMP0', str(temp0))\
                 .replace('RESTRAINT_WT', str(args.restraint_wt))\
