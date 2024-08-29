@@ -74,7 +74,7 @@
         },
         "bond_const": 10.0,                               # force constant for Boresch-style bond restraint, in kcal/mol/A^2
         "angle_const": 100.0,                             # force constant for Boresch-style angle restraint, in kcal/mol/radian^2
-        "dihedral_const": 100.0,                          # force constant for Boresch-style dihedral restraint, in kcal/mol
+        "dihedral_const": 100.0,                          # force constant for Boresch-style dihedral restraint, in kcal/mol/radian^2
         "abfe_solvated_vdw_lambdas": [                    # lambda windows for solvated decoupled leg
             0.0, 0.05, 0.10, 0.15, 0.20,
             0.25, 0.30, 0.35, 0.40, 0.45,

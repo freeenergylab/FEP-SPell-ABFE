@@ -145,7 +145,7 @@ def _parse_args():
         )
     boresch_grp.add_argument(
         '-dc', '--dihedral_const', default=100.0, type=float,
-        help='Force constant for dihedral restraint, in kcal/mol'
+        help='Force constant for dihedral restraint, in kcal/mol/radian^2'
         )
     boresch_grp.add_argument(
         '-rs', '--restraint_seed', type=int, default=None,
