@@ -30,7 +30,9 @@ import abfe.md.cpptraj_tools as cpptraj_tools
 import abfe.md.md_tools as md_tools
 import abfe.md.analytic as analytic
 import abfe.utils.common_tools as ctools
-from abfe.md.amber_alchemy_mdin import *
+from abfe.md.amber_alchemy_mdin import SOLVATED_MIN
+from abfe.md.amber_alchemy_mdin import SOLVATED_HEAT, SOLVATED_PRESS
+from abfe.md.amber_alchemy_mdin import SOLVATED_TI
 
 def _parse_args():
     parser = argparse.ArgumentParser(
@@ -463,6 +465,23 @@ if __name__ == '__main__':
 
         comp = pickle.load(open(morph_pkl_file, "rb"))
         workdir = os.path.join(args.abfe_workdir, '_alchemy_md', args.complex_name)
+        if comp.protein_type == 'soluble':
+            from abfe.md.amber_alchemy_mdin import COMPLEX_MIN
+            from abfe.md.amber_alchemy_mdin import COMPLEX_HEAT, COMPLEX_PRESS
+            from abfe.md.amber_alchemy_mdin import COMPLEX_TI
+            from abfe.md.amber_alchemy_mdin import COMPLEX_RESTRAINT_MIN
+            from abfe.md.amber_alchemy_mdin import COMPLEX_RESTRAINT_HEAT, COMPLEX_RESTRAINT_PRESS
+            from abfe.md.amber_alchemy_mdin import COMPLEX_RESTRAINT_TI
+        elif comp.protein_type == 'membrane':
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_MIN
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_HEAT, COMPLEX_PRESS
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_TI
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_RESTRAINT_MIN
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_RESTRAINT_HEAT, COMPLEX_RESTRAINT_PRESS
+            from abfe.md.amber_alchemy_mdin_mem import COMPLEX_RESTRAINT_TI
+        else:
+            print(f'Only support the protein type of [soluble, membrane].')
+            print(f'The provided protein type is {comp.protein_type}.')
         #==========================================================================
         # 2.1 Analytic Boresch Restraint
         #==========================================================================

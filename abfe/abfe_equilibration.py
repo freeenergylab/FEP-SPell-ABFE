@@ -20,7 +20,9 @@ from collections import OrderedDict
 
 import abfe.md.md_tools as md_tools
 import abfe.utils.common_tools as ctools
-from abfe.md.amber_mdin import *
+from abfe.md.amber_mdin import SOLVATED_MIN_1, SOLVATED_MIN_2
+from abfe.md.amber_mdin import SOLVATED_HEAT, SOLVATED_PRESS
+from abfe.md.amber_mdin import SOLVATED_RELAX
 
 def _parse_args():
     parser = argparse.ArgumentParser(
@@ -178,6 +180,17 @@ if __name__ == '__main__':
         comp = pickle.load(open(topo_pkl_file, "rb"))
         workdir = os.path.join(args.abfe_workdir, '_equilibration', args.complex_name)
         comp.equil_dir = os.path.abspath(workdir)
+        if comp.protein_type == 'soluble':
+            from abfe.md.amber_mdin import COMPLEX_MIN_1, COMPLEX_MIN_2
+            from abfe.md.amber_mdin import COMPLEX_HEAT, COMPLEX_PRESS
+            from abfe.md.amber_mdin import COMPLEX_RELAX
+        elif comp.protein_type == 'membrane':
+            from abfe.md.amber_mdin_mem import COMPLEX_MIN_1, COMPLEX_MIN_2
+            from abfe.md.amber_mdin_mem import COMPLEX_HEAT, COMPLEX_PRESS
+            from abfe.md.amber_mdin_mem import COMPLEX_RELAX
+        else:
+            print(f'Only support the protein type of [soluble, membrane].')
+            print(f'The provided protein type is {comp.protein_type}.')
         sh_filename = 'submit.sh'
         comp_equil_steps = OrderedDict()
         comp_equil_steps['min-1'] = COMPLEX_MIN_1\

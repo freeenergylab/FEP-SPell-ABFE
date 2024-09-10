@@ -207,7 +207,8 @@ def guess_file_info(filepath):
 
 def get_tleap_input(component_list, output_prefix, water_model, boxtype,
                     boxbuffer, neutralize=True, cation='Na+', anion='Cl-',
-                    num_cations=0, num_anions=0, phosaa_ff=None, lipid_ff=None):
+                    num_cations=0, num_anions=0, phosaa_ff=None, lipid_ff=None,
+                    protein_type='soluble', box_info=[]):
     """Generate an input cmd list for tleap.
 
     Args:
@@ -242,6 +243,11 @@ def get_tleap_input(component_list, output_prefix, water_model, boxtype,
         num_anions (int, optional):
             Number of anions to add. If zero, only enough to neutralize the system
             will be added (can also be zero)
+        protein_type (str):
+            {`soluble`, `membrane`}
+        box_info (list):
+            The box information,
+            e.g. CRYST1   81.971   82.209   88.609  90.00  90.00  90.00
 
     Returns:
         leap_cmds (list):
@@ -278,12 +284,14 @@ def get_tleap_input(component_list, output_prefix, water_model, boxtype,
             leap_cmds.append(f'{cname} = loadMol2 {comp.mol2_file}')
             comp_names.append(cname)
         elif comp.coord_file is not None:
-            if lipid_ff is not None:
-                error_msg = "Only support lipid21 model."
-                assert lipid_ff in const.LIPID_DEFS, error_msg
-                leap_cmds.append('source %s' % os.path.join(const.LEAPHOME, 'cmd',
-                    const.LIPID_DEFS[lipid_ff]['source'])
-                    )
+            if protein_type == 'membrane':
+                if lipid_ff is not None:
+                    error_msg = "Only support lipid21 model."
+                    assert lipid_ff in const.LIPID_DEFS, error_msg
+                    leap_cmds.append('source %s' % os.path.join(const.LEAPHOME, 'cmd',
+                        const.LIPID_DEFS[lipid_ff]['source']))
+                else:
+                    print(f'Please specify a force field for lipid membrane.')
             if phosaa_ff is not None:
                 error_msg = "Only support phosaa14SB and phosaa19SB model."
                 assert phosaa_ff in const.PHOSAA_DEFS, error_msg
@@ -300,19 +308,22 @@ def get_tleap_input(component_list, output_prefix, water_model, boxtype,
     num_cations = max(0, int(num_cations))
     num_anions = max(0, int(num_anions))
 
-    if boxtype == 'rect':
-        leap_cmds.append(f'solvateBox system {water_box} {boxbuffer}')
-    elif boxtype == 'oct':
-        leap_cmds.append(f'solvateOct system {water_box} {boxbuffer}')
-    else:
-        print('Only support a rectangular or truncated octhedtral waterbox.')
+    if protein_type == 'soluble' or output_prefix == 'solvated':
+        if boxtype == 'rect':
+            leap_cmds.append(f'solvateBox system {water_box} {boxbuffer}')
+        elif boxtype == 'oct':
+            leap_cmds.append(f'solvateOct system {water_box} {boxbuffer}')
+        else:
+            print('Only support a rectangular or truncated octhedtral waterbox.')
 
-    if neutralize:
-        leap_cmds.append(f'addions system {cation} 0')
-        leap_cmds.append(f'addions system {anion} 0')
+        if neutralize:
+            leap_cmds.append(f'addions system {cation} 0')
+            leap_cmds.append(f'addions system {anion} 0')
 
-    if not num_cations == 0 or not num_anions == 0:
-        leap_cmds.append(f'addions system {cation} {num_cations} {anion} {num_anions}')
+        if not num_cations == 0 or not num_anions == 0:
+            leap_cmds.append(f'addions system {cation} {num_cations} {anion} {num_anions}')
+    elif protein_type == 'membrane' and output_prefix == 'complex':
+        leap_cmds.append('set system box {%s %s %s}'%(box_info[1], box_info[2], box_info[3]))
 
     leap_cmds.append(f'saveAmberParm system {prmtop} {restrt}')
     leap_cmds.append(f'savePdb system {pdb}')

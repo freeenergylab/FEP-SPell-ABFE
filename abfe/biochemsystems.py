@@ -350,7 +350,8 @@ class Complex(object):
 
     def prep_complex_ff(self, workdir, protein_ff, water_model, boxtype,
                         boxbuffer, neutralize=True, hmr=False, hmass=3.024,
-                        phosaa_ff=None, lipid_ff=None, ionconc=0.0):
+                        phosaa_ff=None, lipid_ff=None, ionconc=0.0,
+                        protein_type='soluble', box_info=[]):
         """Prepare the force field for complex system.
         """
         self.parm7_file = os.path.abspath(os.path.join(workdir, 'complex.parm7'))
@@ -363,6 +364,7 @@ class Complex(object):
         self.water_model = water_model
         self.boxtype = boxtype
         self.boxbuffer = boxbuffer
+        self.protein_type = protein_type
         self.protein.add_ff(source=os.path.join(const.LEAPHOME, 'cmd', const.PRO_DEFS[protein_ff]['source']))
 
         for _, cof in self.cofactors.items():
@@ -378,7 +380,8 @@ class Complex(object):
             self.components, 'complex',
             water_model, boxtype, boxbuffer,
             neutralize=neutralize, phosaa_ff=phosaa_ff,
-            lipid_ff=lipid_ff
+            lipid_ff=lipid_ff, protein_type=protein_type,
+            box_info=box_info,
             )
 
         with ctools.DirManager(workdir):
@@ -394,7 +397,7 @@ class Complex(object):
                 sys.exit(1)
 
         # Add certain salt concentration
-        if not ionconc == 0.0:
+        if not ionconc == 0.0 and protein_type=='soluble':
             prmtop = self.parm7_file
             print(time.strftime("%c"))
             print(f"Add ionconc for {prmtop}.")

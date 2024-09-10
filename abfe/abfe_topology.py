@@ -18,6 +18,7 @@ import time
 
 import abfe.const as const
 import abfe.biochemsystems as bcs
+import abfe.utils.common_tools as ctools
 
 def _parse_args():
     parser = argparse.ArgumentParser(
@@ -54,6 +55,10 @@ def _parse_args():
     parser.add_argument(
         '-cn', '--cofactor_names', nargs='*', default=[],
         help='List contains the cofactor names'
+        )
+    parser.add_argument(
+        '-pt', '--protein_type', default='soluble', choices=['soluble', 'membrane'],
+        help='Str contains the protein type'
         )
     parser.add_argument(
         '-bt', '--box_type', default='rect', choices=['rect', 'oct'],
@@ -150,6 +155,16 @@ if __name__ == "__main__":
     if not args.hfe_only:
         # Construct the protein object. One protein for each job.
         _pro = os.path.join(args.protein_dir, 'protein.pdb')
+        print(f'The protein type is {args.protein_type}.')
+        if args.protein_type == "membrane":
+            print(f"Read the box information from the {_pro} file.")
+            box_info = ctools.parse_pdb(_pro)
+            error_msg = f"Please provide the box info for membrane protein, "
+            error_msg += f"the first line of {_pro} file starts with CRYST. e.g. "
+            error_msg += f"CRYST1   81.971   82.209   88.609  90.00  90.00  90.00"
+            assert box_info[0].startswith('CRYST'), error_msg
+        else:
+            box_info = []
         try:
             protein = bcs.Protein(_pro)
         except:
@@ -195,6 +210,8 @@ if __name__ == "__main__":
             lipid_ff=lipid_ff,
             hmr=args.hmr,
             ionconc=args.ionconc,
+            protein_type=args.protein_type,
+            box_info=box_info,
             )
 
         # Dump the pkl files.
