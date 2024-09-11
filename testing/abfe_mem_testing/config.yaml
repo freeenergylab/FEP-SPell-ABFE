@@ -1,0 +1,111 @@
+{
+    "main": {
+        "ligands_in": "ligands.in",                       # input file containing compounds to be submitted
+        "workflow_type": "abfe",                          # {"abfe", "ahfe"}
+        "stages": [
+            "topology", "equilibration",                  # "topology", "equilibration",
+            "alchemy_morph", "alchemy_md",                # "alchemy_morph", "alchemy_md",
+            "alchemy_analysis"                            # "alchemy_analysis"
+        ],
+        "mdcntrl": {                                      # md simulation control parameters
+            "temperature": 298.15,                        # simulation temperature, in Kelvin
+            "cutoff": 10.,                                # cutoff value for long-range interactions, in Angstrom
+            "ntwx": 10,                                   # output saved samples frequency, in ps
+            "gti_add_sc": 5,                              # 1: default(keep SC internal ele&vdw)=="double-decoupled"
+                                                          # 3: scale SC internal ele&vdw=="double-annihilation"
+                                                          # 5 and 6: ACES(3 + scale SC internal torsion)
+        },
+        "slurm": {                                        # slurm parameters
+            "partition": "3080",                          # slurm partition name, e.g. "3080"
+            "exclude": "",                                # excluded nodes, e.g. "headnode"
+            "gpus-per-node": 4,                           # gpu number on each compute node
+            "cpus-per-task": 4,                           # cpu cores for each task for md simulation
+            "time": [
+                "72:00:00", "72:00:00",
+                "72:00:00", "72:00:00",
+                "72:00:00"
+            ],                                            # timelimit for each stage of the above stages
+        },   
+    },
+    "topology": {
+        "protein_name": "4MQS",                           # user-defined protein name
+        "protein_type": "membrane",                       # protein type, {"soluble" or "membrane"}, default: soluble
+        "protein_ff": "ff14SB",                           # {"ff14SB"}
+        "ligand_ff": "gaff2",                             # {"gaff2"}
+        "cofactor_names": [],                             # list of strings, e.g. ["CFA", "CFB"]
+        "cofactor_ff": "gaff2",                           # {"gaff2"}
+        "lipid_ff": "lipid21",                            # {"lipid21"} for lipid membrane
+        "water_ff": "tip3p",                              # {"tip3p", "spce", "tip4pew"}
+        "box_type": "rect",                               # {"rect" or "oct"}
+        "lig_box_buffer": 18.0,                           # box buffer for ligand, in Angstrom
+        "com_box_buffer": 0.0,                            # box buffer for complex, in Angstrom
+        "neutralize": True,                               # keep system neutral
+        "ionconc": 0.0,                                   # salt concentration, in Molar
+        "hmr": False,                                     # False: Turn off HMR; True: turn on HMR; for alchemy_md stage
+        "hmass": 3.024,                                   # hydrogen mass, in amu
+    },
+    "equilibration": {
+        "dry_run": False,                                 # False: submit; True: only slurm bash script
+        "timestep": 0.002,                                # in ps; 0.004 ps if HMR
+        "solvated_length": 5.,                            # simulation time for ligand in water, in ns
+        "complex_length": 5.,                             # simulation time for ligand in binding pocket, in ns
+        "restraintmask": "!:WAT,Cl-,K+,Na+ & !@H=",       # specify solute heavy atoms for positional restraint during min-heat-press simulations, in Amber-Mask style
+        "restraint_wt": 10.,                              # set force constant of positional restraint, in kcal/mol/A^2
+    },
+    "alchemy_morph": {
+        "hmr": False,                                     # False: Turn off HMR; True: turn on HMR; for alchemy_md stage
+        "hmass": 3.024,                                   # hydrogen mass, in amu
+    },
+    "alchemy_md": {
+        "dry_run": False,                                 # False: submit; True: only slurm bash script
+        "timestep": 0.002,                                # in ps; 0.004 ps if HMR
+        "remd": False,                                    # True: turn on; False: turn off, replica-exchange method for FEP production simulation
+        "remd_numexchg": 1000,                            # 1000 attempts for remd
+        "solvated_length": 10.0,                          # FEP production simulation time for solvated leg, in ns
+        "complex_length": 10.0,                           # FEP production simuletion time for complex legs, in ns
+        "restraintmask": "!:WAT,Cl-,K+,Na+ & !@H=",       # specify solute heavy atoms for positional restraint during min-heat-press simulations, in Amber-Mask style
+        "restraint_wt": 5.,                               # set force constant of positional restraint, in kcal/mol/A^2
+        "lig_restraint_atoms": {                          # Boresch-style three atoms of protein receptor: [L1, L2, L3], in Amber-Mask style
+            'IXO': [':1@C9', ':1@C10', ':1@C8'],
+        },
+        "rec_restraint_atoms": {                          # Boresch-style three atoms of protein receptor: [P1, P2, P3], in Amber-Mask style
+            'IXO': [':177@CA', ':226@CA', ':248@CA'],
+        },
+        "bond_const": 10.0,                               # force constant for Boresch-style bond restraint, in kcal/mol/A^2
+        "angle_const": 100.0,                             # force constant for Boresch-style angle restraint, in kcal/mol/radian^2
+        "dihedral_const": 100.0,                          # force constant for Boresch-style dihedral restraint, in kcal/mol/radian^2
+        "abfe_solvated_vdw_lambdas": [                    # lambda windows for solvated decoupled leg
+            0.0, 0.05, 0.10, 0.15, 0.20,
+            0.25, 0.30, 0.35, 0.40, 0.45,
+            0.475, 0.50, 0.525, 0.55, 0.575,
+            0.585, 0.59, 0.60, 0.61, 0.62,
+            0.63, 0.64, 0.65, 0.66, 0.67,
+            0.68, 0.69, 0.70, 0.71, 0.72,
+            0.73, 0.74, 0.75, 0.76, 0.77,
+            0.78, 0.79, 0.80, 0.825, 0.85,
+            0.875, 0.90, 0.95, 1.0
+        ],
+        "abfe_complex_vdw_lambdas": [                     # lambda windows for complex decoupled leg
+            0.0, 0.05, 0.10, 0.15, 0.20,
+            0.25, 0.30, 0.35, 0.40, 0.45,
+            0.475, 0.50, 0.525, 0.55, 0.575,
+            0.585, 0.59, 0.60, 0.61, 0.62,
+            0.63, 0.64, 0.65, 0.66, 0.67,
+            0.68, 0.69, 0.70, 0.71, 0.72,
+            0.73, 0.74, 0.75, 0.76, 0.77,
+            0.78, 0.79, 0.80, 0.825, 0.85,
+            0.875, 0.90, 0.95, 1.0
+        ],
+        "abfe_complex_restraint_lambdas": [               # lambda windows for complex restraint removed leg
+            0.0, 0.15, 0.3, 0.45, 0.6,
+            0.75, 0.8, 0.85, 0.9, 0.925,
+            0.95, 0.96, 0.97, 0.98, 0.99,
+            1.0
+        ],
+    },
+    "alchemy_analysis": {
+        "methods": ["MBAR", "TI"],                        # alchemical analysis methods
+        "solvent_mask": ":WAT,K+,Na+,Cl-,PA,PC,OL,CHL",   # specify solvent atoms for charge-correction calculations, in Amber-Mask style
+                                                          # POPC and CHL1 as lipid components: PA,PC,OL,CHL
+    }
+}
