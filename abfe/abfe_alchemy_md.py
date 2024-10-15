@@ -502,13 +502,26 @@ if __name__ == '__main__':
             temperature = args.temperature
             kr = args.bond_const
             ktheta = args.angle_const
+            kalpha = args.angle_const
             kphi = args.dihedral_const
+            kbeta = args.dihedral_const
+            kgamma = args.dihedral_const
             rst_correction = analytic.restraint_correction(
-                T=temperature, r0=r0, theta0=theta0, kr=kr, ktheta=ktheta, kphi=kphi
+                T=temperature, r0=r0, theta0=theta0,
+                kr=kr, ktheta=ktheta, kalpha=kalpha, kphi=kphi, kbeta=kbeta, kgamma=kgamma
                 )
             results = np.array([[rst_correction]]).T
             df = pd.DataFrame(results, columns=['Total (kcal/mol)'])
             df.to_csv('results.csv', float_format='%.2f')
+            # Just dump out the correction results from schrodinger for comparison.
+            _rst_correction = analytic.restraint_correction_schrodinger(
+                T=temperature, r0=r0, alpha0=alpha0, theta0=theta0,
+                gamma0=gamma0, beta0=beta0, phi0=phi0,
+                Kr=args.bond_const, Kang=args.angle_const, Kdihed=args.dihedral_const
+                )
+            _results = np.array([[_rst_correction]]).T
+            _df = pd.DataFrame(_results, columns=['Total (kcal/mol)'])
+            _df.to_csv('results_schrodinger.csv', float_format='%.2f')
         #==========================================================================
         # 2.2 VDW
         #==========================================================================
