@@ -12,7 +12,7 @@ This module can be used to do Boresch-style restraint analytic correction.
 """
 from math import pi, log, sin, sqrt, exp, erf
 
-def restraint_correction(T, r0, theta0, kr, ktheta, kphi):
+def restraint_correction(T, r0, theta0, kr, ktheta, kalpha, kphi, kbeta, kgamma):
     """Do Boresch-style restraint analytic correction, refer to
 
     Calculation of Standard Binding Free Energies: Aromatic Molecules
@@ -29,7 +29,10 @@ def restraint_correction(T, r0, theta0, kr, ktheta, kphi):
         theta0 (float): equilibrium value for angle theta
         kr (float): force constant for distance r
         ktheta (float): force constant for angle theta
+        kalpha (float): force constant for angle alpha
         kphi (float): force constant for dihedral phi
+        kbeta (float): force constant for dihedral beta
+        kgamma (float): force constant for dihedral gamma
  
     Returns:
         FtC0 + Fr (float): Boresch analytic restraint correction value
@@ -39,13 +42,16 @@ def restraint_correction(T, r0, theta0, kr, ktheta, kphi):
     theta0 = float(theta0)
     kr     = float(kr)*2.0
     ktheta = float(ktheta)*2.0
+    kalpha = float(kalpha)*2.0
     kphi   = float(kphi)*2.0
+    kbeta   = float(kbeta)*2.0
+    kgamma   = float(kgamma)*2.0
 
     V = 1660. # in A^3
     kB = 0.0019872041 # Boltzmann's constant (kcal/mol/K)
     FtC0 = -(kB*T)*log(r0**2*sin(theta0/180.0*pi)\
         *sqrt((2*pi*kB*T)**3/(kr*ktheta*kphi))/V) # Eq. 38
-    Fr = -(kB*T)*log(1.0/(8*pi**2)*(2*pi*kB*T/kr)**1.5) # Eq. 40
+    Fr = -(kB*T)*log(1.0/(8*pi**2)*sqrt((2*pi*kB*T)**3/(kalpha*kbeta*kgamma))) # Eq. 40
     print('Translational: %.2f kcal/mol' % FtC0)
     print('Rotational: %.2f kcal/mol' % Fr)
 
@@ -108,6 +114,13 @@ if __name__ == '__main__':
     """Just do test for restraint_correction function.
     """
     correction = restraint_correction(
-        T=298.15, ktheta=100., theta0=85.370, kphi=100., kr=10., r0=7.230,
+        T=298.15, r0=4.470, theta0=101.230,
+        kr=10, ktheta=100, kalpha=100, kphi=100, kbeta=100, kgamma=100
         )
-    print('The reference value is 8.99 kcal/mol, while this calculated value is %.2f kcal/mol.' % correction)
+    print('The reference value is 11.62 kcal/mol, while this calculated restraint_correction is %.2f kcal/mol.' % correction)
+    correction = restraint_correction_schrodinger(
+        T=298.15, r0=4.470, alpha0=72.140, theta0=101.230,
+        gamma0=77.887, beta0=-137.094, phi0=9.048,
+        Kr=10, Kang=100, Kdihed=100
+        )
+    print('The reference value is 11.65 kcal/mol, while this calculated restraint_correction_schrodinger is %.2f kcal/mol.' % correction)
