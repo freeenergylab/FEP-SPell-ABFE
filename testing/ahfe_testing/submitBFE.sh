@@ -13,6 +13,23 @@
 if [ -f "/etc/profile" ] ; then
     source /etc/profile
 fi
+
+show_developer_info() {
+  developer="$1"
+  organization="$2"
+  email="$3"
+  printf "Developer：%s\n" "$developer" 
+  printf "Affiliation：%s\n" "$organization"
+  printf "E-mail：%s\n" "$email"
+}
+
+show_developer_info "Pengfei Li" \
+                    "Single Particle, LLC Suzhou, Jiangsu, China" \
+                    "alan.pengfeili@gmail.com"
+show_developer_info "Ye Mei" \
+                    "East China Normal University, Shanghai, China" \
+                    "ymei@phy.ecnu.edu.cn"
+
 #==============================================================================
 # Setup User-defined Variables
 #==============================================================================
