@@ -24,10 +24,12 @@ WATER_DEFS = {
 
 PRO_DEFS = {
     'ff14SB': {'source': 'leaprc.protein.ff14SB'},
+    'ff19SB': {'source': 'leaprc.protein.ff19SB'},
     }
 
 PHOSAA_DEFS = {
     'phosaa14SB': {'source': 'leaprc.phosaa14SB'},
+    'phosaa19SB': {'source': 'leaprc.phosaa19SB'},
     }
 
 LIPID_DEFS = {
